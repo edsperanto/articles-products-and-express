@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-let productData = {
-	generateNewID: function() {
-		return currentID = Math.random().toString(36).slice(2).substr(0, 10);
-	}
-};
+let productData = {};
+
+function generateNewID() {
+	return Math.random().toString(36).slice(2).substr(0, 10);
+}
 
 function priceToNumber(price) {
 	let priceStr = price.trim();
@@ -13,6 +13,10 @@ function priceToNumber(price) {
 	let priceNum = Number(priceStrWithoutDollarSign.trim());
 	return isNaN(priceNum) ? (false) : (Number(priceStr));
 }
+
+router.get('/', (req, res) => {
+	res.json(productData);
+});
 
 router.post('/', (req, res) => {
 	let price = priceToNumber(req.body.price);
@@ -23,18 +27,20 @@ router.post('/', (req, res) => {
 		return nameIsStr && priceIsNum && inventoryIsStr;
 	}
 	if(productHasValidFormat()) {
-		let currentID = productData.generateNewID();
+		let currentID = generateNewID();
 		productData[currentID] = req.body;
 		productData[currentID]["price"] = price.toFixed(2);
 		productData[currentID]["id"] = currentID;
-		res.end();
+		res.json(productData[currentID]);
+	}else{
+		res.json({ success: false });
 	}
 });
 
 router.put('/', (req, res) => {
 	let price = priceToNumber(req.body.price);
 	function productEditHasValidFormat() {
-		let productExists = typoef productData[req.body.id] === 'object';
+		let productExists = typeof productData[req.body.id] === 'object';
 		let nameIsStr = typeof req.body.name === 'string' || req.body.name === undefined;
 		let priceIsNum = typeof price === 'number' || price === undefined;
 		let inventoryIsStr = typeof req.body.inventory === 'string' || req.body.inventory === undefined;
@@ -47,6 +53,9 @@ router.put('/', (req, res) => {
 	}
 	if(productEditHasValidFormat()) {
 		updateProductData();
+		res.json(productData[req.body.id]);
+	}else{
+		res.json({ success: false });
 	}
 });
 
