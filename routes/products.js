@@ -7,8 +7,9 @@ let productData = {
 router.post('/', (req, res) => {
 	function priceToNumber() {
 		let priceStr = req.body.price.trim();
-		priceStr = (priceStr.charAt(0) === '$') ? (priceStr.substr(1)) : (priceStr);
-		return isNaN(Number(priceStr)) ? (false) : (Number(priceStr));
+		let priceStrWithoutDollarSign = (priceStr.charAt(0) === '$') ? (priceStr.substr(1)) : (priceStr);
+		let priceNum = Number(priceStrWithoutDollarSign.trim());
+		return isNaN(priceNum) ? (false) : (Number(priceStr));
 	}
 	function productHasValidFormat() {
 		let nameIsStr = typeof req.body.name === 'string';
@@ -17,9 +18,9 @@ router.post('/', (req, res) => {
 		return nameIsStr && priceIsNum && inventoryIsStr;
 	}
 	if(productHasValidFormat()) {
-		console.log('yes');
 		let currentIndex = productData.newId;
 		productData[currentIndex] = req.body;
+		productData[currentIndex]["price"] = priceToNumber().toFixed(2);
 		productData[currentIndex]["id"] = currentIndex;
 		productData.newId++;
 		res.end();
