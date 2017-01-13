@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 let productData = {
-	newId: 1
+	generateNewID: function() {
+		return currentID = Math.random().toString(36).slice(2).substr(0, 10);
+	}
 };
 
 router.post('/', (req, res) => {
@@ -18,11 +20,11 @@ router.post('/', (req, res) => {
 		return nameIsStr && priceIsNum && inventoryIsStr;
 	}
 	if(productHasValidFormat()) {
-		let currentIndex = productData.newId;
-		productData[currentIndex] = req.body;
-		productData[currentIndex]["price"] = priceToNumber().toFixed(2);
-		productData[currentIndex]["id"] = currentIndex;
-		productData.newId++;
+		let currentID = productData.generateNewID();
+		productData[currentID] = req.body;
+		productData[currentID]["price"] = priceToNumber().toFixed(2);
+		productData[currentID]["id"] = currentID;
+		console.log(productData[currentID]);
 		res.end();
 	}
 });
