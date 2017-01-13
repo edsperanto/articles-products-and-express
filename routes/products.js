@@ -37,14 +37,15 @@ router.post('/', (req, res) => {
 	}
 });
 
-router.put('/', (req, res) => {
+router.put('/:id', (req, res) => {
 	let price = priceToNumber(req.body.price);
 	function productEditHasValidFormat() {
+		let linkIDMatchesJSON = req.param("id") === req.body.id;
 		let productExists = typeof productData[req.body.id] === 'object';
 		let nameIsStr = typeof req.body.name === 'string' || req.body.name === undefined;
 		let priceIsNum = typeof price === 'number' || price === undefined;
 		let inventoryIsStr = typeof req.body.inventory === 'string' || req.body.inventory === undefined;
-		return productExists = nameIsStr && priceIsNum && inventoryIsStr;
+		return linkIDMatchesJSON && productExists && nameIsStr && priceIsNum && inventoryIsStr;
 	}
 	function updateProductData() {
 		productData[req.body.id].name = req.body.name;
