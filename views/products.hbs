@@ -1,28 +1,30 @@
 <div class='item-container'>
-	{{#if allProducts}}
-	<div class='item index-menu' id='to-index'>
-		<h2>Index</h2>
+	<div id='menu'>
+		{{#if allProducts}}
+		<div class='item index-menu' id='to-index'>
+			<h2>Index</h2>
+		</div>
+		<div class='item index-menu green' id='to-new'>
+			<h2>New</h2>
+		</div>
+		{{/if}}
+		{{#if oneProduct}}
+		<div class='item index-menu' id='to-products'>
+			<h2>Products</h2>
+		</div>
+		<div class='item index-menu green' id='to-edit-product'>
+			<h2>Edit</h2>
+		</div>
+		{{/if}}
+		{{#if editProduct}}
+		<div class='item index-menu red' id='to-discard-product'>
+			<h2>Discard</h2>
+		</div>
+		<div class='item index-menu green' id='to-save-product'>
+			<h2>Save</h2>
+		</div>
+		{{/if}}
 	</div>
-	<div class='item index-menu green' id='to-new'>
-		<h2>New</h2>
-	</div>
-	{{/if}}
-	{{#if oneProduct}}
-	<div class='item index-menu' id='to-products'>
-		<h2>Products</h2>
-	</div>
-	<div class='item index-menu green' id='to-edit-product'>
-		<h2>Edit</h2>
-	</div>
-	{{/if}}
-	{{#if editProduct}}
-	<div class='item index-menu red' id='to-discard-product'>
-		<h2>Discard</h2>
-	</div>
-	<div class='item index-menu green' id='to-save-product'>
-		<h2>Save</h2>
-	</div>
-	{{/if}}
 	<script>
 		let toIndex = document.getElementById('to-index');
 		let toNew = document.getElementById('to-new');
@@ -56,6 +58,7 @@
 			}
 		{{/if}}
 	</script>
+	<div id='posts'>
 	{{#if allProducts}}
 		{{#each product}}
 			{{> product}}
@@ -71,4 +74,5 @@
 			{{> editProduct}}
 		{{/with}}
 	{{/if}}
+	</div>
 </div>

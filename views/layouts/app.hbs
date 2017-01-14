@@ -11,12 +11,17 @@
     		padding: 0; margin: 0;
     		text-decoration: none;
     	}
-    	html {
-    		color: black;
-    		font-size: 25px;
-    		font-family: sans-serif;
-    		background-color: #67727A;
-    	}
+        html {
+            color: black;
+            font-size: 23px;
+            font-family: sans-serif;
+            background-color: #67727A;
+        }
+        body {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+        }
     	h1 {
     		font-size: 3rem;
     	}
@@ -26,11 +31,16 @@
     		padding: 2rem;
     		background: linear-gradient(90deg, #D75C37, #FF3000);
     	}
+        #posts {
+            width: 100%;
+        }
     	.item-container {
     		margin: 1.5rem;
     		margin-bottom: 2.5rem;
+            width: 100%;
     	}
     	.item {
+            width: calc(100% - 2rem);
     		margin: 1rem;
     		margin-top: 2.5rem;
     		padding: 1.5rem;
@@ -50,10 +60,12 @@
     	.index-menu {
 			cursor: pointer;
             padding-top: 2.5rem;
+            padding-right: 2rem;
             width: calc(50% - 2rem - 4px);
             display: inline-block;
             background: linear-gradient(90deg, #1C1C1C, black);
             color: #F5F5F5;
+            text-align: center;
     	}
         .index-menu:hover {
             background: linear-gradient(90deg, black, black);
@@ -101,6 +113,37 @@
         }
         input {
             height: 1.5rem;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+         @media screen and (max-width: 700px) {
+            html {
+                font-size: 15px;
+            }
+        }
+        @media screen and (min-width: 1065px) {
+            .index-menu {
+                width: 10rem !important;
+            }
+            .item-container {
+                height: 100%;
+                display: flex;
+                flex-flow: row wrap;
+                justify-content: flex-start;
+            }
+            .index-menu {
+                display: block;
+            }            
+            #posts {
+                flex: 1;
+                width: 25rem;
+                display: flex;
+                flex-flow: row wrap;
+                justify-content: center;
+            }
+            .item {
+                width: 25rem;
+            }
         }
     </style>
   </head>
