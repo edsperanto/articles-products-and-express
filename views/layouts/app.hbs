@@ -53,7 +53,6 @@
             width: calc(50% - 2rem - 4px);
             display: inline-block;
             background: linear-gradient(90deg, #1C1C1C, black);
-            /*background-color: #1C1C1C;*/
             color: #F5F5F5;
     	}
         .index-menu:hover {
@@ -82,9 +81,27 @@
     		list-style-type: none;
     		margin: 1rem;
     	}
-    	li {
+        table {
+            width: 100%;
+        }
+        tr {
+            width: 100%;
+        }
+    	td {
+            display: inline-block;
     		margin: 0.5rem;
+            width: 4rem;
     	}
+        .detail-data {
+            width: calc(100% - 6rem);
+            border-width: 0;
+            border-bottom-width: 0.1rem;
+            border-style: dashed;
+            font-size: 0.9rem;
+        }
+        input {
+            height: 1.5rem;
+        }
     </style>
   </head>
   <body>

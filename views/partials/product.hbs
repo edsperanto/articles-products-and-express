@@ -2,9 +2,20 @@
 	<p class='name'>{{name}}</p>
 	{{#if notEmpty}}
 	<ul class='details'>
-		<li>ID &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; {{id}}</li>
-		<li>Price &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; {{price}}</li>
-		<li>Inventory &emsp;&emsp;&emsp; {{inventory}}</li>
+		<table>
+			<tr>
+				<td>ID</td>
+				<td class='detail-data'>{{id}}</td>
+			</tr>
+			<tr>
+				<td>Price</td>
+				<td class='detail-data'>{{price}}</td>
+			</tr>
+			<tr>
+				<td>Inventory</td>
+				<td class='detail-data'>{{inventory}}</td>
+			</tr>
+		</table>
 	</ul>
 	{{/if}}
 </div>

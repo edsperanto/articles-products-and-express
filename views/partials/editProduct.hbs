@@ -1,9 +1,22 @@
 <div class='item' id='editForm'>
-	<p>{{id}}</p>
-	<ul>
-		<li>Name &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; {{name}}</li>
-		<li>Price &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; {{price}}</li>
-		<li>Inventory &emsp;&emsp;&emsp; {{inventory}}</li>
+	<p class='name'>Product #{{id}}</p>
+	<ul class='details'>
+		<form action="/product" method='get'>
+			<table>
+				<tr>
+					<td>ID</td>
+					<td class='detail-data'><input name='name' value='{{name}}'></td>
+				</tr>
+				<tr>
+					<td>Price</td>
+					<td class='detail-data'><input name='price' value='{{price}}'></td>
+				</tr>
+				<tr>
+					<td>Inventory</td>
+					<td class='detail-data'><input name='inventory' value='{{inventory}}'></td>
+				</tr>
+			</table>
+		</form>
 	</ul>
 </div>
 <script>
