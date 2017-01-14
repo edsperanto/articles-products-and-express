@@ -8,7 +8,7 @@ function cloneObj(obj) {
 }
 
 function rndStr(length) {
-	return Math.random().toString(36).slice(2).substr(0, length);
+	return Math.random().toString(10).slice(2).substr(0, length);
 }
 
 function moneyToNum(price) {

@@ -6,7 +6,14 @@ module.exports = (function() {
 	let _list = {};
 
 	function _all() {
-		return To.cloneObj(_list);
+		let returnObj = { "empty": {} };
+		if(Object.keys(_list).length === 0) {
+			returnObj.empty.name = "Product List is Empty";
+			returnObj.empty.notEmpty = false;
+		}else{
+			returnObj = To.cloneObj(_list);
+		}
+		return returnObj;
 	}
 
 	function _newProductHasValidFormat(data) {
@@ -32,7 +39,7 @@ module.exports = (function() {
 			_list[data.id] = {};
 			_list[data.id].notEmpty = true;
 			_updateProduct(data);
-			success();
+			success(_getByID(data.id));
 		}else{
 			failure();
 		}
@@ -75,22 +82,12 @@ module.exports = (function() {
 		}
 	}
 
-	function _getEmptyProduct() {
-		let returnObj = {
-			"empty": {}
-		};
-		returnObj.empty.name = "Product List is Empty";
-		returnObj.empty.notEmpty = false;
-		return returnObj;
-	}
-
 	return {
 		all: _all,
 		add: _add,
 		getByID: _getByID,
 		editByID: _editByID,
-		deleteByID: _deleteByID,
-		getEmptyProduct: _getEmptyProduct
+		deleteByID: _deleteByID
 	}
 
 })();

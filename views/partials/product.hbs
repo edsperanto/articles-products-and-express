@@ -9,7 +9,11 @@
 	{{/if}}
 </div>
 <script>
-	document.getElementById("{{id}}").addEventListener('click', () => {
-		window.location = '/products/{{id}}';
-	});
+	if(window.location.pathname !== '/products/{{id}}') {
+		let currentProduct = document.getElementById("{{id}}");
+		currentProduct.addEventListener('click', () => {
+			window.location = '/products/{{id}}';
+		});
+		currentProduct.style.cursor = 'pointer';
+	}
 </script>
