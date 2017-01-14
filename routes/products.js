@@ -3,35 +3,41 @@ const router = express.Router();
 const Products = require('../db/products');
 
 router.get('/', (req, res) => {
-	res.json(Products.all());
+	let productListData = Products.all();
+	res.render('products', { "displayAll": true, "product": productListData });
+});
+
+router.get('/:id', (req, res) => {
+	let productData = Products.getByID(req.param("id"));
+	res.render('products', { "displayAll": false, "product": productData });
 });
 
 router.post('/', (req, res) => {
 	function success() {
-		res.json({ "success": true });
+		res.redirect(303, `/products`);
 	}
 	function failure() {
-		res.json({ "success": false });
+		res.redirect(303, `/products/new`);
 	}
 	Products.add(req.body, success, failure);
 });
 
 router.put('/:id', (req, res) => {
 	function success() {
-		res.json({ "success": true, "updated product": Products.getByID(req.body) });
+		res.redirect(303, `/products/${req.body.id}`);
 	}
 	function failure() {
-		res.json({ "success": false });
+		res.redirect(303, `/products/${req.body.id}/edit`);
 	}
 	Products.editByID(req.body, success, failure);
 });
 
 router.delete('/:id', (req, res) => {
 	function success() {
-		res.json({ "success": true, "product list": Products.all() });
+		res.redirect(303, `/products`);
 	}
 	function failure() {
-		res.json({ "success": false });
+		res.redirect(303, `/products/${req.body.id}`);
 	}
 	Products.deleteByID(req.body, success, failure);
 });

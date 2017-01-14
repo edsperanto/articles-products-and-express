@@ -1,0 +1,11 @@
+{{#if displayAll}}
+	<h1>All Products</h1>
+	{{#each product}}
+		{{> product}}
+	{{/each}}
+{{else}}
+	<h1>Product</h1>
+	{{#with product}}
+		{{> product}}
+	{{/with}}
+{{/if}}

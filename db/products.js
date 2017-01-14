@@ -52,8 +52,8 @@ module.exports = (function() {
 		return productExists && nameIsStr && priceIsNum && inventoryIsStr;
 	}
 
-	function _getByID(data) {
-		return To.cloneObj(_list[data.id]);
+	function _getByID(id) {
+		return To.cloneObj(_list[id]);
 	}
 
 	function _editByID(data, success, failure) {
