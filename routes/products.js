@@ -15,14 +15,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-	let linkIDMatchesJsonID = req.param("id") === req.body.id;
-	let productExists = typeof productData[req.body.id] === 'object';
-	if(linkIDMatchesJsonID && productExists) {
-		delete productData[req.body.id];
-		res.json({ success: true });
-	}else{
-		res.json({ success: false });
-	}
+	res.json(Products.deleteByID(req.body));
 });
 
 module.exports = router;

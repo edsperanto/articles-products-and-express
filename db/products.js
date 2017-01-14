@@ -72,11 +72,24 @@ module.exports = (function() {
 		return response;
 	}
 
+	function _deleteByID(data) {
+		let response;
+		let productExists = typeof _list[data.id] === 'object';
+		if(productExists) {
+			delete _list[data.id];
+			response = { success: true };
+		}else{
+			response = { success: false };
+		}
+		return response;
+	}
+
 	return {
 		all: _all,
 		add: _add,
 		getByID: _getByID,
-		editByID: _editByID
+		editByID: _editByID,
+		deleteByID: _deleteByID
 	}
 
 })();
