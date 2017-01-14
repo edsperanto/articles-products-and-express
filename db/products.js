@@ -8,7 +8,6 @@ module.exports = (function() {
 	function _all() {
 		let returnObj = { "empty": {} };
 		if(Object.keys(_list).length === 0) {
-			// returnObj.empty.id = "empty";
 			returnObj.empty.name = "Product List is Empty";
 			returnObj.empty.notEmpty = false;
 		}else{
@@ -65,7 +64,6 @@ module.exports = (function() {
 		if(_list[id] === undefined) {
 			returnObj.id = "empty";
 			returnObj.name = "Product Does Not Exist";
-			// returnObj.notEmpty = false;
 		}else{
 			returnObj = To.cloneObj(_list[id]);
 		}

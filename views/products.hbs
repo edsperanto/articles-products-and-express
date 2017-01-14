@@ -30,6 +30,7 @@
 		let toEditProduct = document.getElementById('to-edit-product');
 		let toDiscardProduct = document.getElementById('to-discard-product');
 		let toSaveProduct = document.getElementById('to-save-product');
+		let empty{{id}} = "{{product.name}}" === "Product Does Not Exist" || "{{product.name}}" === "Product List is Empty";
 		{{#if allProducts}}
 		toIndex.addEventListener('click', () => {
 			window.location = '/';
@@ -37,7 +38,6 @@
 		toNew.addEventListener('click', () => {
 			window.location = '/products/new';
 		});
-		toNew.style.backgroundColor = '#0C5212';
 		{{/if}}
 		{{#if oneProduct}}
 		toProducts.addEventListener('click', () => {
@@ -46,17 +46,21 @@
 		toEditProduct.addEventListener('click', () => {
 			window.location = '/products/{{product.id}}/edit';
 		});
-		toEditProduct.style.backgroundColor = '#0C5212';
+		if(empty{{id}}) {
+			toEditProduct.style.display = 'none';
+		}
 		{{/if}}
 		{{#if editProduct}}
 		toDiscardProduct.addEventListener('click', () => {
 			window.location = '/products/{{product.id}}';
 		});
-		toDiscardProduct.style.backgroundColor = '#8A1E1E';
 		toSaveProduct.addEventListener('click', () => {
 			window.location = '/products/{{product.id}}';
 		});
-		toSaveProduct.style.backgroundColor = '#0C5212';
+		if(empty{{id}}) {
+			toDiscardProduct.style.display = 'none';
+			toSaveProduct.style.display = 'none';
+		}
 		{{/if}}
 	</script>
 	{{#if allProducts}}
