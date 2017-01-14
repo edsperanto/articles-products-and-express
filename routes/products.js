@@ -3,7 +3,7 @@ const router = express.Router();
 const Products = require('../db/products');
 
 router.get('/', (req, res) => {
-	res.json(Products.all);
+	res.json(Products.all());
 });
 
 router.post('/', (req, res) => {

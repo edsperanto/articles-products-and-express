@@ -1,10 +1,13 @@
-module.exports = {
-	cloneObj: function(obj) {
-		let copy = {};
-		for(let key in obj) {
-			copy[key] = (typeof obj[key] === 'object') ?
-				(cloneObj(obj[key])) : (copy[key] = obj[key])
+function cloneObj(obj) {
+	let copy = {};
+	for(let key in obj) {
+		if(typeof obj[key] === 'object') {
+			copy[key] = cloneObj(obj[key]);
+		}else{
+			copy[key] = obj[key];
 		}
-		return copy;
 	}
+	return copy;
 }
+
+module.exports = { cloneObj };

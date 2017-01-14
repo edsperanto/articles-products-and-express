@@ -73,7 +73,7 @@ module.exports = (function() {
 	}
 
 	return {
-		all: _all(),
+		all: _all,
 		add: _add,
 		getByID: _getByID,
 		editByID: _editByID
