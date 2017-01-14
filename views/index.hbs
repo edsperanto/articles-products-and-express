@@ -1,14 +1,18 @@
-<header>
-	<h1>Index</h1>
-</header>
-
-{{!-- {{#if isLoggedIn}}
-	<p>{{contentToShow}}</p>
-{{else}}
-	<p>Not Logged In</p>
+{{#if atIndex}}
+	<div class='item-container'>
+		<div class='item index-menu' id='to-products'>
+			<h2 click='window.location = \'/location\';'>Products</h2>
+		</div>
+		<div class='item index-menu' id='to-articles'>
+			<h2 click='window.location = \'/articles\';'>Articles</h2>
+		</div>
+		<script>
+			document.getElementById('to-products').addEventListener('click', () => {
+				window.location = '/products';
+			});
+			document.getElementById('to-articles').addEventListener('click', () => {
+				window.location = '/articles';
+			});
+		</script>
+	</div>
 {{/if}}
-
-{{#each books}}
-  <h1>title: {{title}}</h1>
-  <h2>author: {{author}}</h2>
-{{/each}} --}}

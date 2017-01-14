@@ -1,16 +1,19 @@
-{{#if displayAll}}
-	<header>
-		<h1>All Products</h1>
-	</header>
+{{#if allProducts}}
 	<div class='item-container'>
+		<div class='item index-menu' id='to-index'>
+			<h2>Index</h2>
+		</div>
+		<script>
+			document.getElementById('to-index').addEventListener('click', () => {
+				window.location = '/';
+			});
+		</script>
 		{{#each product}}
 			{{> product}}
 		{{/each}}
 	</div>
-{{else}}
-	<header>
-		<h1>Product</h1>
-	</header>
+{{/if}}
+{{#if oneProduct}}
 	<div class='item-container'>
 		{{#with product}}
 			{{> product}}

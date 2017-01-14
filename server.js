@@ -20,7 +20,7 @@ app.use('/articles', articles);
 app.use('/products', products);
 
 app.get('/', (req, res) => {
-	res.render('index');
+	res.render('index', { "atIndex": true });
 });
 
 app.listen(PORT, () => {

@@ -9,12 +9,16 @@
     		box-sizing: border-box;
     		left: 0; right: 0; top: 0; bottom: 0;
     		padding: 0; margin: 0;
+    		text-decoration: none;
     	}
     	html {
     		color: dark-gray;
     		font-size: 25px;
     		font-family: sans-serif;
     		background-color: #67727A;
+    	}
+    	h1 {
+    		font-size: 3rem;
     	}
     	header {
     		color: #F5F5F5;
@@ -32,6 +36,12 @@
     		padding: 1.5rem;
     		background-color: #F5F5F5;
     	}
+    	.item p {
+    		margin-top: 0.7rem;
+    	}
+    	.index-menu {
+			cursor: pointer;
+    	}
     	.name {
     		font-size: 2rem;
     	}
@@ -45,7 +55,7 @@
     </style>
   </head>
   <body>
-  	{{!-- {{> header}} --}}
+  	{{> header}}
     {{{body}}}
   </body>
 </html>
