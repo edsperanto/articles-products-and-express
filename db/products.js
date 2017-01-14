@@ -2,6 +2,7 @@ const To = require('../To');
 
 module.exports = (function() {
 
+	const rndIDStrLength = 6;
 	let _list = {};
 
 	function _all() {
@@ -17,7 +18,7 @@ module.exports = (function() {
 
 	function _newProductHasValidFormat(data) {
 		let nameIsStr = typeof data.name === 'string';
-		let priceIsNum = typeof _priceToNumber(data.price) === 'number';
+		let priceIsNum = typeof To.moneyToNum(data.price) === 'number';
 		let inventoryIsStr = typeof data.inventory === 'string';
 		return nameIsStr && priceIsNum && inventoryIsStr;
 	}
@@ -29,16 +30,12 @@ module.exports = (function() {
 				_list[data.id][key] = data[key];
 			}
 		});
-		_list[data.id].price = _priceToNumber(data.price);
-	}
-
-	function _generateNewID() {
-		return Math.random().toString(36).slice(2).substr(0, 10);
+		_list[data.id].price = To.moneyToNum(data.price);
 	}
 
 	function _add(data, success, failure) {
 		if(_newProductHasValidFormat(data)) {
-			data.id = _generateNewID();
+			data.id = To.rndStr(rndIDStrLength);
 			_list[data.id] = {};
 			_updateProduct(data);
 			success();
@@ -50,7 +47,7 @@ module.exports = (function() {
 	function _editProductHasValidFormat(data) {
 		let productExists = typeof _list[data.id] === 'object';
 		let nameIsStr = typeof data.name === 'string' || data.name === undefined;
-		let priceIsNum = typeof _priceToNumber(data.price) === 'number' || data.price === undefined;
+		let priceIsNum = typeof To.moneyToNum(data.price) === 'number' || data.price === undefined;
 		let inventoryIsStr = typeof data.inventory === 'string' || data.inventoy === undefined;
 		return productExists && nameIsStr && priceIsNum && inventoryIsStr;
 	}
