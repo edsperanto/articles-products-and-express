@@ -12,7 +12,7 @@
     		text-decoration: none;
     	}
     	html {
-    		color: dark-gray;
+    		color: black;
     		font-size: 25px;
     		font-family: sans-serif;
     		background-color: #67727A;
@@ -40,6 +40,13 @@
     	.item p {
     		margin-top: 1rem;
     	}
+        .clickableItem:hover {
+            background-color: #DDDDDD;
+        }
+        .clickableItem:active, .red:active, .green:active {
+            background-color: black;
+            color: white;
+        }
     	.index-menu {
 			cursor: pointer;
             padding-top: 2.5rem;
@@ -49,7 +56,11 @@
             color: #F5F5F5;
     	}
         .index-menu:hover {
-
+            background-color: black;
+        }
+        .index-menu:active {
+            background-color: #F5F5F5;
+            color: black;
         }
     	.name {
     		font-size: 2rem;

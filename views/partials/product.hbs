@@ -9,11 +9,14 @@
 	{{/if}}
 </div>
 <script>
-	if(window.location.pathname !== '/products/{{id}}') {
+	let notEmpty{{id}} = "{{name}}" !== "Product Does Not Exist" && "{{name}}" !== "Product List is Empty";
+	if(window.location.pathname !== '/products/{{id}}' && notEmpty{{id}}) {
 		let currentProduct = document.getElementById("{{id}}");
 		currentProduct.addEventListener('click', () => {
 			window.location = '/products/{{id}}';
 		});
 		currentProduct.style.cursor = 'pointer';
+		currentProduct.className = 'item clickableItem';
 	}
+	
 </script>

@@ -3,7 +3,7 @@
 	<div class='item index-menu' id='to-index'>
 		<h2>Index</h2>
 	</div>
-	<div class='item index-menu' id='to-new'>
+	<div class='item index-menu green' id='to-new'>
 		<h2>New</h2>
 	</div>
 	{{/if}}
@@ -11,26 +11,52 @@
 	<div class='item index-menu' id='to-products'>
 		<h2>Products</h2>
 	</div>
-	<div class='item index-menu' id='to-edit'>
+	<div class='item index-menu green' id='to-edit-product'>
 		<h2>Edit</h2>
 	</div>
 	{{/if}}
+	{{#if editProduct}}
+	<div class='item index-menu red' id='to-discard-product'>
+		<h2>Discard</h2>
+	</div>
+	<div class='item index-menu green' id='to-save-product'>
+		<h2>Save</h2>
+	</div>
+	{{/if}}
 	<script>
+		let toIndex = document.getElementById('to-index');
+		let toNew = document.getElementById('to-new');
+		let toProducts = document.getElementById('to-products');
+		let toEditProduct = document.getElementById('to-edit-product');
+		let toDiscardProduct = document.getElementById('to-discard-product');
+		let toSaveProduct = document.getElementById('to-save-product');
 		{{#if allProducts}}
-		document.getElementById('to-index').addEventListener('click', () => {
+		toIndex.addEventListener('click', () => {
 			window.location = '/';
 		});
-		document.getElementById('to-new').addEventListener('click', () => {
+		toNew.addEventListener('click', () => {
 			window.location = '/products/new';
 		});
+		toNew.style.backgroundColor = '#0C5212';
 		{{/if}}
 		{{#if oneProduct}}
-		document.getElementById('to-products').addEventListener('click', () => {
+		toProducts.addEventListener('click', () => {
 			window.location = '/products';
 		});
-		document.getElementById('to-edit').addEventListener('click', () => {
+		toEditProduct.addEventListener('click', () => {
 			window.location = '/products/{{product.id}}/edit';
 		});
+		toEditProduct.style.backgroundColor = '#0C5212';
+		{{/if}}
+		{{#if editProduct}}
+		toDiscardProduct.addEventListener('click', () => {
+			window.location = '/products/{{product.id}}';
+		});
+		toDiscardProduct.style.backgroundColor = '#8A1E1E';
+		toSaveProduct.addEventListener('click', () => {
+			window.location = '/products/{{product.id}}';
+		});
+		toSaveProduct.style.backgroundColor = '#0C5212';
 		{{/if}}
 	</script>
 	{{#if allProducts}}
@@ -41,6 +67,11 @@
 	{{#if oneProduct}}
 		{{#with product}}
 			{{> product}}
+		{{/with}}
+	{{/if}}
+	{{#if editProduct}}
+		{{#with product}}
+			{{> editProduct}}
 		{{/with}}
 	{{/if}}
 </div>

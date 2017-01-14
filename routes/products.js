@@ -19,9 +19,12 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/:id/test', (req, res) => {
-	let urlID = req.params.id;
-	let productData = Products.getByID(urlID);
+	let productData = Products.getByID(req.params.id);
 	res.json({ "success": true, "product": productData });
+});
+
+router.get('/:id/edit', (req, res) => {
+	res.render("products", { "editProduct": true, "product": Products.getByID(req.params.id) });
 });
 
 router.post('/', (req, res) => {
@@ -46,7 +49,7 @@ router.post('/test', (req, res) => {
 
 router.put('/:id', (req, res) => {
 	function success() {
-		res.redirect(303, `/products/${req.body.id}`);
+		res.render("products", { "editProduct": true, "product": Products.getByID(req.params.id) });
 	}
 	function failure() {
 		res.redirect(303, `/products/${req.body.id}/edit`);
