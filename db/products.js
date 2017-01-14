@@ -1,16 +1,18 @@
+const To = require('../To');
+
 module.exports = (function() {
 
 	let _list = {};
 
 	function _all() {
-		return Object.create(_list);
+		return To.cloneObj(_list);
 	}
 
 	function _priceToNumber(price) {
 		let priceStr = price.trim();
 		let priceStrNo$ = (priceStr.charAt(0) === '$') ? (priceStr.substr(1)) : (priceStr);
 		let priceNum = Number(priceStrNo$.trim());
-		return isNaN(priceNum) ? false : priceNum.toFixed(2);
+		return isNaN(priceNum) ? false : priceNum;
 	}
 
 	function _newProductHasValidFormat(data) {
@@ -35,11 +37,16 @@ module.exports = (function() {
 	}
 
 	function _add(data) {
+		let response;
 		if(_newProductHasValidFormat(data)) {
-			let newProduct = data;
-			newProduct.id = _generateNewID();
+			data.id = _generateNewID();
+			_list[data.id] = {};
 			_updateProduct(data);
+			response = To.cloneObj(_list[data.id]);
+		}else{
+			response = { success: false };
 		}
+		return response;
 	}
 
 	function _editProductHasValidFormat(data) {
@@ -51,20 +58,25 @@ module.exports = (function() {
 	}
 
 	function _getByID(data) {
-		return Object.create(_list[data.id]);
+		return To.cloneObj(_list[data.id]);
 	}
 
 	function _editByID(data) {
+		let response;
 		if(_editProductHasValidFormat(data)) {
 			_updateProduct(data);
+			response = To.cloneObj(_list[data.id]);
+		}else{
+			response = { success: false };
 		}
+		return response;
 	}
 
 	return {
 		all: _all(),
 		add: _add,
 		getByID: _getByID,
-		editByID: _getByID
+		editByID: _editByID
 	}
 
 })();
