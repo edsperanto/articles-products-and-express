@@ -23,7 +23,7 @@ module.exports = (function() {
 				_list[data.id][key] = data[key];
 			}
 		});
-		_list[data.id].price = To.moneyToNum(data.price);
+		_list[data.id].price = "$" + To.moneyToNum(data.price).toFixed(2);
 	}
 
 	function _add(data, success, failure) {
@@ -41,7 +41,7 @@ module.exports = (function() {
 		let productExists = typeof _list[data.id] === 'object';
 		let noName = data.name === undefined;
 		let noPrice = data.price === undefined;
-		let noInventory = data.inventoy === undefined;
+		let noInventory = data.inventory === undefined;
 		let nameIsStr = typeof data.name === 'string';
 		let priceIsNum = typeof To.moneyToNum(data.price) === 'number';
 		let inventoryIsStr = typeof data.inventory === 'string';

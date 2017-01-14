@@ -4,7 +4,6 @@ const Products = require('../db/products');
 
 router.get('/', (req, res) => {
 	let productListData = Products.all();
-	res.write("can you see this");
 	res.render('products', { "displayAll": true, "product": productListData });
 });
 

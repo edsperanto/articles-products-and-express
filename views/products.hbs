@@ -1,11 +1,19 @@
 {{#if displayAll}}
-	<h1>All Products</h1>
-	{{#each product}}
-		{{> product}}
-	{{/each}}
+	<header>
+		<h1>All Products</h1>
+	</header>
+	<div class='item-container'>
+		{{#each product}}
+			{{> product}}
+		{{/each}}
+	</div>
 {{else}}
-	<h1>Product</h1>
-	{{#with product}}
-		{{> product}}
-	{{/with}}
+	<header>
+		<h1>Product</h1>
+	</header>
+	<div class='item-container'>
+		{{#with product}}
+			{{> product}}
+		{{/with}}
+	</div>
 {{/if}}
