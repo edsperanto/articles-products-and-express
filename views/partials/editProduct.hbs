@@ -1,4 +1,4 @@
-<div class='item'>
+<div class='item' id='editForm'>
 	<p>{{id}}</p>
 	<ul>
 		<li>Name &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; {{name}}</li>
@@ -7,5 +7,10 @@
 	</ul>
 </div>
 <script>
-	
+	let notEmpty{{id}} = "{{name}}" !== "Product Does Not Exist" && "{{name}}" !== "Product List is Empty";
+	if(window.location.pathname !== '/products/{{id}}' && notEmpty{{id}}) {
+
+	}else{
+		document.getElementById('editForm').style.display = 'none';
+	}
 </script>

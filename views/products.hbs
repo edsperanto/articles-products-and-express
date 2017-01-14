@@ -31,36 +31,29 @@
 		let toDiscardProduct = document.getElementById('to-discard-product');
 		let toSaveProduct = document.getElementById('to-save-product');
 		let empty{{id}} = "{{product.name}}" === "Product Does Not Exist" || "{{product.name}}" === "Product List is Empty";
+		function linkTo(ele, link) {
+			ele.addEventListener('click', () => {
+				window.location = link;
+			});
+		}
 		{{#if allProducts}}
-		toIndex.addEventListener('click', () => {
-			window.location = '/';
-		});
-		toNew.addEventListener('click', () => {
-			window.location = '/products/new';
-		});
+			linkTo(toIndex, '/');
+			linkTo(toNew, '/products/new');
 		{{/if}}
 		{{#if oneProduct}}
-		toProducts.addEventListener('click', () => {
-			window.location = '/products';
-		});
-		toEditProduct.addEventListener('click', () => {
-			window.location = '/products/{{product.id}}/edit';
-		});
-		if(empty{{id}}) {
-			toEditProduct.style.display = 'none';
-		}
+			linkTo(toProducts, '/products');
+			linkTo(toEditProduct, '/products/{{product.id}}/edit');
+			if(empty{{id}}) {
+				toEditProduct.style.display = 'none';
+			}
 		{{/if}}
 		{{#if editProduct}}
-		toDiscardProduct.addEventListener('click', () => {
-			window.location = '/products/{{product.id}}';
-		});
-		toSaveProduct.addEventListener('click', () => {
-			window.location = '/products/{{product.id}}';
-		});
-		if(empty{{id}}) {
-			toDiscardProduct.style.display = 'none';
-			toSaveProduct.style.display = 'none';
-		}
+			linkTo(toDiscardProduct, '/products/{{product.id}}');
+			linkTo(toSaveProduct, '/products/{{product.id}}');
+			if(empty{{id}}) {
+				toDiscardProduct.style.display = 'none';
+				toSaveProduct.style.display = 'none';
+			}
 		{{/if}}
 	</script>
 	{{#if allProducts}}
