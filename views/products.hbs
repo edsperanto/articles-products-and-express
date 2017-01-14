@@ -1,22 +1,46 @@
-{{#if allProducts}}
-	<div class='item-container'>
-		<div class='item index-menu' id='to-index'>
-			<h2>Index</h2>
-		</div>
-		<script>
-			document.getElementById('to-index').addEventListener('click', () => {
-				window.location = '/';
-			});
-		</script>
+<div class='item-container'>
+	{{#if allProducts}}
+	<div class='item index-menu' id='to-index'>
+		<h2>Index</h2>
+	</div>
+	<div class='item index-menu' id='to-new'>
+		<h2>New</h2>
+	</div>
+	{{/if}}
+	{{#if oneProduct}}
+	<div class='item index-menu' id='to-products'>
+		<h2>Products</h2>
+	</div>
+	<div class='item index-menu' id='to-edit'>
+		<h2>Edit</h2>
+	</div>
+	{{/if}}
+	<script>
+		{{#if allProducts}}
+		document.getElementById('to-index').addEventListener('click', () => {
+			window.location = '/';
+		});
+		document.getElementById('to-new').addEventListener('click', () => {
+			window.location = '/products/new';
+		});
+		{{/if}}
+		{{#if oneProduct}}
+		document.getElementById('to-products').addEventListener('click', () => {
+			window.location = '/products';
+		});
+		document.getElementById('to-edit').addEventListener('click', () => {
+			window.location = '/products/{{product.id}}/edit';
+		});
+		{{/if}}
+	</script>
+	{{#if allProducts}}
 		{{#each product}}
 			{{> product}}
 		{{/each}}
-	</div>
-{{/if}}
-{{#if oneProduct}}
-	<div class='item-container'>
+	{{/if}}
+	{{#if oneProduct}}
 		{{#with product}}
 			{{> product}}
 		{{/with}}
-	</div>
-{{/if}}
+	{{/if}}
+</div>

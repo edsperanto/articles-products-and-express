@@ -1,10 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const Products = require('../db/products');
+const To = require('../To');
 
 router.get('/', (req, res) => {
 	let productListData = Products.all();
-	res.render('products', { "allProducts": true, "product": productListData });
+	if(Object.keys(productListData).length === 0) {
+		res.render('products', { "allProducts": true, "product": Products.getEmptyProduct() });
+	}else{
+		res.render('products', { "allProducts": true, "product": productListData });
+	}
+});
+
+router.get('/.json', (req, res) => {
+	let productListData = Products.all();
+	res.json({ "success": true, "product list": productListData });
 });
 
 router.get('/:id', (req, res) => {

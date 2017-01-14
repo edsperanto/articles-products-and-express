@@ -1,8 +1,15 @@
-<div class='item'>
+<div class='item' id={{id}}>
 	<p class='name'>{{name}}</p>
+	{{#if notEmpty}}
 	<ul>
 		<li>ID &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; {{id}}</li>
 		<li>Price &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; {{price}}</li>
 		<li>Inventory &emsp;&emsp;&emsp; {{inventory}}</li>
 	</ul>
+	{{/if}}
 </div>
+<script>
+	document.getElementById("{{id}}").addEventListener('click', () => {
+		window.location = '/products/{{id}}';
+	});
+</script>

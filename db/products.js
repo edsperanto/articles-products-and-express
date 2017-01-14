@@ -30,6 +30,7 @@ module.exports = (function() {
 		if(_newProductHasValidFormat(data)) {
 			data.id = To.rndStr(rndIDStrLength);
 			_list[data.id] = {};
+			_list[data.id].notEmpty = true;
 			_updateProduct(data);
 			success();
 		}else{
@@ -74,12 +75,22 @@ module.exports = (function() {
 		}
 	}
 
+	function _getEmptyProduct() {
+		let returnObj = {
+			"empty": {}
+		};
+		returnObj.empty.name = "Product List is Empty";
+		returnObj.empty.notEmpty = false;
+		return returnObj;
+	}
+
 	return {
 		all: _all,
 		add: _add,
 		getByID: _getByID,
 		editByID: _editByID,
-		deleteByID: _deleteByID
+		deleteByID: _deleteByID,
+		getEmptyProduct: _getEmptyProduct
 	}
 
 })();
