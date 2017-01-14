@@ -7,15 +7,33 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	res.json(Products.add(req.body));
+	function success() {
+		res.json({ "success": true });
+	}
+	function failure() {
+		res.json({ "success": false });
+	}
+	Products.add(req.body, success, failure);
 });
 
 router.put('/:id', (req, res) => {
-	res.json(Products.editByID(req.body));
+	function success() {
+		res.json({ "success": true, "updated product": Products.getByID(req.body) });
+	}
+	function failure() {
+		res.json({ "success": false });
+	}
+	Products.editByID(req.body, success, failure);
 });
 
 router.delete('/:id', (req, res) => {
-	res.json(Products.deleteByID(req.body));
+	function success() {
+		res.json({ "success": true, "product list": Products.all() });
+	}
+	function failure() {
+		res.json({ "success": false });
+	}
+	Products.deleteByID(req.body, success, failure);
 });
 
 module.exports = router;

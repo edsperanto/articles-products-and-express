@@ -36,17 +36,15 @@ module.exports = (function() {
 		return Math.random().toString(36).slice(2).substr(0, 10);
 	}
 
-	function _add(data) {
-		let response;
+	function _add(data, success, failure) {
 		if(_newProductHasValidFormat(data)) {
 			data.id = _generateNewID();
 			_list[data.id] = {};
 			_updateProduct(data);
-			response = To.cloneObj(_list[data.id]);
+			success();
 		}else{
-			response = { success: false };
+			failure();
 		}
-		return response;
 	}
 
 	function _editProductHasValidFormat(data) {
@@ -61,27 +59,23 @@ module.exports = (function() {
 		return To.cloneObj(_list[data.id]);
 	}
 
-	function _editByID(data) {
-		let response;
+	function _editByID(data, success, failure) {
 		if(_editProductHasValidFormat(data)) {
 			_updateProduct(data);
-			response = To.cloneObj(_list[data.id]);
+			success();
 		}else{
-			response = { success: false };
+			failure();
 		}
-		return response;
 	}
 
-	function _deleteByID(data) {
-		let response;
+	function _deleteByID(data, success, failure) {
 		let productExists = typeof _list[data.id] === 'object';
 		if(productExists) {
 			delete _list[data.id];
-			response = { success: true };
+			success();
 		}else{
-			response = { success: false };
+			failure();
 		}
-		return response;
 	}
 
 	return {
