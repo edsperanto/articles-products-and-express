@@ -13,7 +13,8 @@ function rndStr(length) {
 
 function moneyToNum(price) {
 	let priceStr = price.trim();
-	let priceStrNo$ = (priceStr.charAt(0) === '$') ? (priceStr.substr(1)) : (priceStr);
+	let firstChar = priceStr.charAt(0);
+	let priceStrNo$ = (firstChar === '$') ? (priceStr.substr(1)) : (priceStr);
 	let priceNum = Number(priceStrNo$.trim());
 	return isNaN(priceNum) ? false : priceNum;
 }

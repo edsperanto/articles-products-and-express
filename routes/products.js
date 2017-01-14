@@ -4,11 +4,13 @@ const Products = require('../db/products');
 
 router.get('/', (req, res) => {
 	let productListData = Products.all();
+	res.write("can you see this");
 	res.render('products', { "displayAll": true, "product": productListData });
 });
 
 router.get('/:id', (req, res) => {
-	let productData = Products.getByID(req.param("id"));
+	let urlID = req.params.id;
+	let productData = Products.getByID(urlID);
 	res.render('products', { "displayAll": false, "product": productData });
 });
 

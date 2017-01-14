@@ -9,13 +9,6 @@ module.exports = (function() {
 		return To.cloneObj(_list);
 	}
 
-	function _priceToNumber(price) {
-		let priceStr = price.trim();
-		let priceStrNo$ = (priceStr.charAt(0) === '$') ? (priceStr.substr(1)) : (priceStr);
-		let priceNum = Number(priceStrNo$.trim());
-		return isNaN(priceNum) ? false : priceNum;
-	}
-
 	function _newProductHasValidFormat(data) {
 		let nameIsStr = typeof data.name === 'string';
 		let priceIsNum = typeof To.moneyToNum(data.price) === 'number';
@@ -46,10 +39,16 @@ module.exports = (function() {
 
 	function _editProductHasValidFormat(data) {
 		let productExists = typeof _list[data.id] === 'object';
-		let nameIsStr = typeof data.name === 'string' || data.name === undefined;
-		let priceIsNum = typeof To.moneyToNum(data.price) === 'number' || data.price === undefined;
-		let inventoryIsStr = typeof data.inventory === 'string' || data.inventoy === undefined;
-		return productExists && nameIsStr && priceIsNum && inventoryIsStr;
+		let noName = data.name === undefined;
+		let noPrice = data.price === undefined;
+		let noInventory = data.inventoy === undefined;
+		let nameIsStr = typeof data.name === 'string';
+		let priceIsNum = typeof To.moneyToNum(data.price) === 'number';
+		let inventoryIsStr = typeof data.inventory === 'string';
+		return productExists 
+				&& (noName || nameIsStr)
+				&& (noPrice || priceIsNum)
+				&& (noInventory || inventoryIsStr);
 	}
 
 	function _getByID(id) {
