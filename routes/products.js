@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Products = require('../db/products');
 
 let productData = {};
 
