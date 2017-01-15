@@ -1,19 +1,20 @@
 <div class='item' id='editForm'>
 	<p class='name'>Product #{{id}}</p>
 	<ul class='details'>
-		<form action="/product" method='get'>
+		<form action="/products/{{id}}?_method=PUT" method='POST' id='form'>
 			<table>
+				<input type='hidden' name='id' value='{{id}}'>
 				<tr>
 					<td>Name</td>
-					<td class='detail-data'><input name='name' value='{{name}}'></td>
+					<td class='detail-data'><input type='text' name='name' placeholder='{{name}}'></td>
 				</tr>
 				<tr>
 					<td>Price</td>
-					<td class='detail-data'><input name='price' value='{{price}}'></td>
+					<td class='detail-data'><input type='text' name='price' placeholder='{{price}}'></td>
 				</tr>
 				<tr>
 					<td>Inventory</td>
-					<td class='detail-data'><input name='inventory' value='{{inventory}}'></td>
+					<td class='detail-data'><input type='text' name='inventory' placeholder='{{inventory}}'></td>
 				</tr>
 			</table>
 		</form>
@@ -22,7 +23,10 @@
 <script>
 	let notEmpty{{id}} = "{{name}}" !== "Product Does Not Exist" && "{{name}}" !== "Product List is Empty";
 	if(window.location.pathname !== '/products/{{id}}' && notEmpty{{id}}) {
-
+		let form = document.getElementById('form');
+		toSaveProduct.addEventListener('click', () => {
+			form.submit();
+		});
 	}else{
 		document.getElementById('editForm').style.display = 'none';
 	}

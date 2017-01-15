@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const handlebars = require('express-handlebars');
+const methodOverride = require('method-override');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -16,6 +17,8 @@ app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(methodOverride('_method'));
 app.use('/articles', articles);
 app.use('/products', products);
 

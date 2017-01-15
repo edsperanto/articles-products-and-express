@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const router = express.Router();
 const Products = require('../db/products');
 const To = require('../To');
@@ -48,13 +49,16 @@ router.post('/test', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+	console.log('PUTTING');
+	console.log(req.body);
 	function success() {
 		res.render("products", { "editProduct": true, "product": Products.getByID(req.params.id) });
 	}
 	function failure() {
 		res.redirect(303, `/products/${req.body.id}/edit`);
 	}
-	Products.editByID(req.body, success, failure);
+	res.end();
+	// Products.editByID(req.body, success, failure);
 });
 
 router.put('/:id/test', (req, res) => {
