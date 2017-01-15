@@ -13,6 +13,14 @@ router.get('/test', (req, res) => {
 	res.json({ "success": true, "product list": productListData });
 });
 
+router.get('/new', (req, res) => {
+	res.render("products", { "newProduct": true, "product": { "err": false } });
+});
+
+router.get('/new/err', (req, res) => {
+	res.render("products", { "newProduct": true, "product": { "err": true } });
+});
+
 router.get('/:id', (req, res) => {
 	let urlID = req.params.id;
 	let productData = Products.getByID(urlID);
@@ -30,10 +38,10 @@ router.get('/:id/edit', (req, res) => {
 
 router.post('/', (req, res) => {
 	function success() {
-		res.redirect(303, `/products`);
+		res.render("products", { "allProducts": true, "product": Products.all() });
 	}
 	function failure() {
-		res.redirect(303, `/products/new`);
+		res.redirect(303, `/products/new/err`);
 	}
 	Products.add(req.body, success, failure);
 });

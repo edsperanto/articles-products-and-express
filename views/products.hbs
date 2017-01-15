@@ -16,6 +16,14 @@
 			<h2>Edit</h2>
 		</div>
 		{{/if}}
+		{{#if newProduct}}
+		<div class='item index-menu red' id='to-discard-product'>
+			<h2>Discard</h2>
+		</div>
+		<div class='item index-menu green' id='to-save-product'>
+			<h2>Save</h2>
+		</div>
+		{{/if}}
 		{{#if editProduct}}
 		<div class='item index-menu red' id='to-discard-product'>
 			<h2>Discard</h2>
@@ -57,6 +65,14 @@
 				toSaveProduct.style.display = 'none';
 			}
 		{{/if}}
+		{{#if newProduct}}
+			linkTo(toDiscardProduct, '/products/');
+			linkTo(toSaveProduct, '/products/{{product.id}}');
+			if(empty{{id}}) {
+				toDiscardProduct.style.display = 'none';
+				toSaveProduct.style.display = 'none';
+			}
+		{{/if}}
 	</script>
 	<div id='posts'>
 	{{#if allProducts}}
@@ -72,6 +88,11 @@
 	{{#if editProduct}}
 		{{#with product}}
 			{{> editProduct}}
+		{{/with}}
+	{{/if}}
+	{{#if newProduct}}
+		{{#with product}}
+			{{> newProduct}}
 		{{/with}}
 	{{/if}}
 	</div>

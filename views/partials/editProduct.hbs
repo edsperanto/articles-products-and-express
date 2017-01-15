@@ -28,7 +28,7 @@
 </div>
 <script>
 	let notEmpty{{id}} = "{{name}}" !== "Product Does Not Exist" && "{{name}}" !== "Product List is Empty";
-	let rightPath = window.location.pathname.split('/')[2].substr(0, 6) === "{{id}}";
+	let rightPath = window.location.pathname.split('/')[2].substr(0, 6) === "{{id}}" || window.location.pathname === '/products/new';
 	if(rightPath && notEmpty{{id}}) {
 		let form = document.getElementById('form');
 		toSaveProduct.addEventListener('click', () => {
