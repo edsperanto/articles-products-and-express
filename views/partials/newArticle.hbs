@@ -1,0 +1,47 @@
+<div class='item'>
+	{{!-- <p class='name'></p> --}}
+	<ul class='details'>
+		<form action="/articles" method='POST' id='form'>
+			<table>
+				<tr id='error' style='display: none;'>
+					<td style='color: red;'>Error:</td>
+					<td class='detail-data' id='err-msg' style='color: red; border-width: 0;'>Price must be a number</td>
+				</tr>
+				<tr>
+					<td>Name</td>
+					<td class='detail-data'><input type='text' name='name' id='name'></td>
+				</tr>
+				<tr>
+					<td>Price</td>
+					<td class='detail-data'><input type='text' name='price' id='price'></td>
+				</tr>
+				<tr>
+					<td>Inventory</td>
+					<td class='detail-data'><input type='text' name='inventory' id='inventory'></td>
+				</tr>
+			</table>
+		</form>
+	</ul>
+</div>
+<script>
+	let name = document.getElementById('name');
+	let price = document.getElementById('price');
+	let inventory = document.getElementById('inventory');
+	console.log(window.location.pathname.split('/')[2].substr(0, 3));
+	let form = document.getElementById('form');
+	toSaveArticle.addEventListener('click', () => {
+		let nameFilled = name.value !== '';
+		let priceFilled = price.value !== '';
+		let inventoryFilled = inventory.value !== '';
+		if(nameFilled && priceFilled && inventoryFilled) {
+			console.log("SUBMITTING");
+			form.submit();
+		}else{
+			document.getElementById('err-msg').innerText = 'Please complete all fields';
+			document.getElementById('error').style.display = 'table-row';
+		}
+	});
+	{{#if err}}
+		document.getElementById('error').style.display = 'table-row';
+	{{/if}}
+</script>

@@ -9,26 +9,26 @@
 		</div>
 		{{/if}}
 		{{#if oneArticle}}
-		<div class='item index-menu' id='to-products'>
+		<div class='item index-menu' id='to-articles'>
 			<h2>Articles</h2>
 		</div>
-		<div class='item index-menu green' id='to-edit-product'>
+		<div class='item index-menu green' id='to-edit-article'>
 			<h2>Edit</h2>
 		</div>
 		{{/if}}
 		{{#if newArticle}}
-		<div class='item index-menu red' id='to-discard-product'>
+		<div class='item index-menu red' id='to-discard-article'>
 			<h2>Discard</h2>
 		</div>
-		<div class='item index-menu green' id='to-save-product'>
+		<div class='item index-menu green' id='to-save-article'>
 			<h2>Save</h2>
 		</div>
 		{{/if}}
 		{{#if editArticle}}
-		<div class='item index-menu red' id='to-discard-product'>
+		<div class='item index-menu red' id='to-discard-article'>
 			<h2>Discard</h2>
 		</div>
-		<div class='item index-menu green' id='to-save-product'>
+		<div class='item index-menu green' id='to-save-article'>
 			<h2>Save</h2>
 		</div>
 		{{/if}}
@@ -65,7 +65,7 @@
 			}
 		{{/if}}
 		{{#if newArticle}}
-			linkTo(toDiscardArticle, '/articles/');
+			linkTo(toDiscardArticle, '/articles');
 			if(empty{{id}}) {
 				toDiscardArticle.style.display = 'none';
 				toSaveArticle.style.display = 'none';

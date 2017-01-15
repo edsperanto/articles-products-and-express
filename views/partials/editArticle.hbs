@@ -1,0 +1,47 @@
+<div class='item' id='edit-form'>
+	<p class='name'>Article #{{id}}</p>
+	<ul class='details'>
+		<form action="/articles/{{id}}?_method=PUT" method='POST' id='form'>
+			<table>
+				<input type='hidden' name='id' value='{{id}}'>
+				{{#if err}}
+				<tr>
+					<td style='color: red;'>Error:</td>
+					<td class='detail-data' style='color: red; border-width: 0;'>Price must be a number</td>
+				</tr>
+				{{/if}}
+				<tr>
+					<td>Name</td>
+					<td class='detail-data'><input type='text' name='name' placeholder='{{name}}'></td>
+				</tr>
+				<tr>
+					<td>Price</td>
+					<td class='detail-data'><input type='text' name='price' placeholder='{{price}}'></td>
+				</tr>
+				<tr>
+					<td>Inventory</td>
+					<td class='detail-data'><input type='text' name='inventory' placeholder='{{inventory}}'></td>
+				</tr>
+				<tr id='delete-row'>
+					<td><div id='delete'>Delete</div></td>
+				</tr>
+			</table>
+		</form>
+	</ul>
+</div>
+<script>
+	let form = document.getElementById('form');
+	let notEmpty{{id}} = "{{name}}" !== "Article Does Not Exist" && "{{name}}" !== "Article List is Empty";
+	let rightPath = window.location.pathname.split('/')[2].substr(0, 6) === "{{id}}" || window.location.pathname === '/articles/new';
+	if(rightPath && notEmpty{{id}}) {
+		toSaveArticle.addEventListener('click', () => {
+			form.submit();
+		});
+	}else{
+		document.getElementById('editForm').style.display = 'none';
+	}
+	document.getElementById('delete').addEventListener('click', () => {
+		form.setAttribute('action', '/articles/{{id}}?_method=DELETE');
+		form.submit();
+	});
+</script>
