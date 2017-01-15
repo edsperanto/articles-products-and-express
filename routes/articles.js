@@ -33,7 +33,7 @@ router.get('/:id/test', (req, res) => {
 });
 
 router.get('/:id/edit', (req, res) => {
-	res.render("article", { "editArticle": true, "article": Articles.getByID(req.params.id) });
+	res.render("articles", { "editArticle": true, "article": Articles.getByID(req.params.id) });
 });
 
 router.post('/', (req, res) => {
@@ -42,7 +42,7 @@ router.post('/', (req, res) => {
 		res.render("articles", { "allArticles": true, "article": Articles.all() });
 	}
 	function failure() {
-		res.redirect(303, `/article/new/err`);
+		res.redirect(303, `/articles/new/err`);
 	}
 	Articles.add(req.body, success, failure);
 });
