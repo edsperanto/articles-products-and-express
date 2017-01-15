@@ -59,7 +59,6 @@
 		{{/if}}
 		{{#if editProduct}}
 			linkTo(toDiscardProduct, '/products/{{product.id}}');
-			linkTo(toSaveProduct, '/products/{{product.id}}');
 			if(empty{{id}}) {
 				toDiscardProduct.style.display = 'none';
 				toSaveProduct.style.display = 'none';
@@ -67,7 +66,6 @@
 		{{/if}}
 		{{#if newProduct}}
 			linkTo(toDiscardProduct, '/products/');
-			linkTo(toSaveProduct, '/products/{{product.id}}');
 			if(empty{{id}}) {
 				toDiscardProduct.style.display = 'none';
 				toSaveProduct.style.display = 'none';

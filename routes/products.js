@@ -38,6 +38,7 @@ router.get('/:id/edit', (req, res) => {
 
 router.post('/', (req, res) => {
 	function success() {
+		console.log("SUCCESS!!!!");
 		res.render("products", { "allProducts": true, "product": Products.all() });
 	}
 	function failure() {
