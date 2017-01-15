@@ -1,0 +1,97 @@
+<div class='item-container'>
+	<div id='menu'>
+		{{#if allArticles}}
+		<div class='item index-menu' id='to-index'>
+			<h2>Index</h2>
+		</div>
+		<div class='item index-menu green' id='to-new'>
+			<h2>New</h2>
+		</div>
+		{{/if}}
+		{{#if oneArticle}}
+		<div class='item index-menu' id='to-products'>
+			<h2>Articles</h2>
+		</div>
+		<div class='item index-menu green' id='to-edit-product'>
+			<h2>Edit</h2>
+		</div>
+		{{/if}}
+		{{#if newArticle}}
+		<div class='item index-menu red' id='to-discard-product'>
+			<h2>Discard</h2>
+		</div>
+		<div class='item index-menu green' id='to-save-product'>
+			<h2>Save</h2>
+		</div>
+		{{/if}}
+		{{#if editArticle}}
+		<div class='item index-menu red' id='to-discard-product'>
+			<h2>Discard</h2>
+		</div>
+		<div class='item index-menu green' id='to-save-product'>
+			<h2>Save</h2>
+		</div>
+		{{/if}}
+	</div>
+	<script>
+		let toIndex = document.getElementById('to-index');
+		let toNew = document.getElementById('to-new');
+		let toArticles = document.getElementById('to-products');
+		let toEditArticle = document.getElementById('to-edit-article');
+		let toDiscardArticle = document.getElementById('to-discard-article');
+		let toSaveArticle = document.getElementById('to-save-article');
+		let empty{{id}} = "{{article.name}}" === "Article Does Not Exist" || "{{article.name}}" === "Article List is Empty";
+		function linkTo(ele, link) {
+			ele.addEventListener('click', () => {
+				window.location = link;
+			});
+		}
+		{{#if allArticles}}
+			linkTo(toIndex, '/');
+			linkTo(toNew, '/articles/new');
+		{{/if}}
+		{{#if oneArticle}}
+			linkTo(toArticles, '/articles');
+			linkTo(toEditArticle, '/articles/{{article.id}}/edit');
+			if(empty{{id}}) {
+				toEditArticle.style.display = 'none';
+			}
+		{{/if}}
+		{{#if editArticle}}
+			linkTo(toDiscardArticle, '/articles/{{article.id}}');
+			if(empty{{id}}) {
+				toDiscardArticle.style.display = 'none';
+				toSaveArticle.style.display = 'none';
+			}
+		{{/if}}
+		{{#if newArticle}}
+			linkTo(toDiscardArticle, '/articles/');
+			if(empty{{id}}) {
+				toDiscardArticle.style.display = 'none';
+				toSaveArticle.style.display = 'none';
+			}
+		{{/if}}
+	</script>
+	<div id='posts'>
+	{{#if allArticles}}
+		{{#each article}}
+			{{> article}}
+		{{/each}}
+	{{/if}}
+	{{#if oneArticle}}
+		{{#with article}}
+			{{> article}}
+		{{/with}}
+	{{/if}}
+	{{#if editArticle}}
+		{{#with article}}
+			{{> editArticle}}
+		{{/with}}
+	{{/if}}
+	{{#if newArticle}}
+		{{#with article}}
+			{{> newArticle}}
+		{{/with}}
+	{{/if}}
+	</div>
+</div>

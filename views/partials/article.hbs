@@ -1,0 +1,32 @@
+<div class='item' id={{id}}>
+	<p class='name'>{{name}}</p>
+	{{#if notEmpty}}
+	<ul class='details'>
+		<table>
+			<tr>
+				<td>ID</td>
+				<td class='detail-data'>{{id}}</td>
+			</tr>
+			<tr>
+				<td>Price</td>
+				<td class='detail-data'>{{price}}</td>
+			</tr>
+			<tr>
+				<td>Inventory</td>
+				<td class='detail-data'>{{inventory}}</td>
+			</tr>
+		</table>
+	</ul>
+	{{/if}}
+</div>
+<script>
+	let notEmpty{{id}} = "{{name}}" !== "Article Does Not Exist" && "{{name}}" !== "Article List is Empty";
+	if(window.location.pathname !== '/articles/{{id}}' && notEmpty{{id}}) {
+		let currentProduct = document.getElementById("{{id}}");
+		currentProduct.addEventListener('click', () => {
+			window.location = '/articles/{{id}}';
+		});
+		currentProduct.style.cursor = 'pointer';
+		currentProduct.className = 'item clickableItem';
+	}
+</script>
