@@ -60,7 +60,9 @@ router.put('/:id', (req, res) => {
 		res.render("products", { "oneProduct": true, "product": productData });
 	}
 	function failure() {
-		res.redirect(303, `/products/${req.body.id}/edit`);
+		let productData = Products.getByID(req.params.id);
+		productData.err = true;
+		res.render("products", { "editProduct": true, "product": productData });
 	}
 	Products.editByID(req.body, success, failure);
 });

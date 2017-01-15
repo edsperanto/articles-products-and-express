@@ -4,6 +4,12 @@
 		<form action="/products/{{id}}?_method=PUT" method='POST' id='form'>
 			<table>
 				<input type='hidden' name='id' value='{{id}}'>
+				{{#if err}}
+				<tr>
+					<td style='color: red;'>Error:</td>
+					<td class='detail-data' style='color: red; border-width: 0;'>Price must be a number</td>
+				</tr>
+				{{/if}}
 				<tr>
 					<td>Name</td>
 					<td class='detail-data'><input type='text' name='name' placeholder='{{name}}'></td>
@@ -22,7 +28,8 @@
 </div>
 <script>
 	let notEmpty{{id}} = "{{name}}" !== "Product Does Not Exist" && "{{name}}" !== "Product List is Empty";
-	if(window.location.pathname !== '/products/{{id}}' && notEmpty{{id}}) {
+	let rightPath = window.location.pathname.split('/')[2].substr(0, 6) === "{{id}}";
+	if(rightPath && notEmpty{{id}}) {
 		let form = document.getElementById('form');
 		toSaveProduct.addEventListener('click', () => {
 			form.submit();
