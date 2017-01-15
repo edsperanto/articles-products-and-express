@@ -12,6 +12,7 @@ function rndStr(length) {
 }
 
 function moneyToNum(price) {
+	if(price === undefined) { return false };
 	let priceStr = price.trim();
 	let firstChar = priceStr.charAt(0);
 	let priceStrNo$ = (firstChar === '$') ? (priceStr.substr(1)) : (priceStr);

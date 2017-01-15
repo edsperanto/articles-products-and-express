@@ -30,7 +30,7 @@ module.exports = (function() {
 				_list[data.id][key] = data[key];
 			}
 		});
-		_list[data.id].price = "$" + To.moneyToNum(data.price).toFixed(2);
+		_list[data.id].price = "$" + To.moneyToNum(_list[data.id].price).toFixed(2);
 	}
 
 	function _add(data, success, failure) {

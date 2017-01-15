@@ -49,16 +49,20 @@ router.post('/test', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-	console.log('PUTTING');
-	console.log(req.body);
+	for(key in req.body) {
+		if(req.body[key] === "") {
+			req.body[key] = undefined;
+		}
+	}
 	function success() {
-		res.render("products", { "editProduct": true, "product": Products.getByID(req.params.id) });
+		let urlID = req.params.id;
+		let productData = Products.getByID(urlID);
+		res.render("products", { "oneProduct": true, "product": productData });
 	}
 	function failure() {
 		res.redirect(303, `/products/${req.body.id}/edit`);
 	}
-	res.end();
-	// Products.editByID(req.body, success, failure);
+	Products.editByID(req.body, success, failure);
 });
 
 router.put('/:id/test', (req, res) => {
