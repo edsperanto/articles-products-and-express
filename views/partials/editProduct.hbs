@@ -1,4 +1,4 @@
-<div class='item' id='editForm'>
+<div class='item' id='edit-form'>
 	<p class='name'>Product #{{id}}</p>
 	<ul class='details'>
 		<form action="/products/{{id}}?_method=PUT" method='POST' id='form'>
@@ -22,19 +22,26 @@
 					<td>Inventory</td>
 					<td class='detail-data'><input type='text' name='inventory' placeholder='{{inventory}}'></td>
 				</tr>
+				<tr id='delete-row'>
+					<td><div id='delete'>Delete</div></td>
+				</tr>
 			</table>
 		</form>
 	</ul>
 </div>
 <script>
+	let form = document.getElementById('form');
 	let notEmpty{{id}} = "{{name}}" !== "Product Does Not Exist" && "{{name}}" !== "Product List is Empty";
 	let rightPath = window.location.pathname.split('/')[2].substr(0, 6) === "{{id}}" || window.location.pathname === '/products/new';
 	if(rightPath && notEmpty{{id}}) {
-		let form = document.getElementById('form');
 		toSaveProduct.addEventListener('click', () => {
 			form.submit();
 		});
 	}else{
 		document.getElementById('editForm').style.display = 'none';
 	}
+	document.getElementById('delete').addEventListener('click', () => {
+		form.setAttribute('action', '/products/{{id}}?_method=DELETE');
+		form.submit();
+	});
 </script>
