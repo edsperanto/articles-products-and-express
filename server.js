@@ -19,12 +19,12 @@ const hbs = handlebars.create({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
+app.use(logger);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(methodOverride('_method'));
 
-app.use(logger);
-
+app.use(express.static('./public'));
 app.get('/', (req, res) => {
 	res.render('index', { "atIndex": true });
 });
