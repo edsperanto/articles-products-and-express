@@ -37,4 +37,8 @@ function strToUrl(str) {
 	}
 }
 
-module.exports = { cloneObj, rndStr, moneyToNum, strToUrl };
+function urlToStr(url) {
+	return url.split('%20').join(' ');
+}
+
+module.exports = { cloneObj, rndStr, moneyToNum, strToUrl, urlToStr };

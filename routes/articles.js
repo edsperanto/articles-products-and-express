@@ -8,11 +8,6 @@ router.get('/', (req, res) => {
 	res.render("articles", { "allArticles": true, "article": Articles.all() });
 });
 
-router.get('/test', (req, res) => {
-	let articleListData = Articles.all();
-	res.json({ "success": true, "article list": articleListData });
-});
-
 router.get('/new', (req, res) => {
 	res.render("articles", { "newArticle": true, "article": { "err": false } });
 });
@@ -25,11 +20,6 @@ router.get('/:id', (req, res) => {
 	let urlID = req.params.id;
 	let articleData = Articles.getByID(urlID);
 	res.render("articles", { "oneArticle": true, "article": articleData });
-});
-
-router.get('/:id/test', (req, res) => {
-	let articleData = Articles.getByID(req.params.id);
-	res.json({ "success": true, "article": articleData });
 });
 
 router.get('/:id/edit', (req, res) => {
@@ -46,61 +36,31 @@ router.post('/', (req, res) => {
 	Articles.add(req.body, success, failure);
 });
 
-router.post('/test', (req, res) => {
-	function success(newArticle) {
-		res.json({ "success": true, "new article": newArticle });
-	}
-	function failure() {
-		res.json({ "success": false });
-	}
-	Articles.add(req.body, success, failure);
-});
-
 router.put('/:id', (req, res) => {
 	for(key in req.body) {
 		if(req.body[key] === "") {
 			req.body[key] = undefined;
 		}
 	}
-	function success() {
-		let urlID = req.params.id;
-		let articleData = Articles.getByID(urlID);
+	function success(data) {
+		let articleData = Articles.getByID(data.title);
 		res.render("articles", { "oneArticle": true, "article": articleData });
 	}
-	function failure() {
-		let articleData = Articles.getByID(req.params.id);
+	function failure(data) {
+		let articleData = To.cloneObj(data);
 		articleData.err = true;
 		res.render("articles", { "editArticle": true, "article": articleData });
 	}
-	Articles.editByID(To.strToUrl(urlID), success, failure);
-});
-
-router.put('/:id/test', (req, res) => {
-	function success() {
-		res.json({ "success": true, "edited article": Articles.getByID(req.params.id) });
-	}
-	function failure() {
-		res.json({ "success": false });
-	}
-	Articles.editByID(To.strToUrl(req.body.urlTitle), success, failure);
+	Articles.editByID(req.body, success, failure);
 });
 
 router.delete('/:id', (req, res) => {
+	console.log(req.body);
 	function success() {
 		res.redirect(303, `/articles`);
 	}
 	function failure() {
-		res.redirect(303, `/article/${req.body.id}`);
-	}
-	Articles.deleteByID(req.body, success, failure);
-});
-
-router.delete('/:id/test', (req, res) => {
-	function success() {
-		res.json({ "success": true, "new article list": Articles.all() });
-	}
-	function failure() {
-		res.json({ "success": false });
+		res.redirect(303, `/article/${req.body.urlTitle}`);
 	}
 	Articles.deleteByID(req.body, success, failure);
 });

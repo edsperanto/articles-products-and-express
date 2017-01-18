@@ -25,13 +25,13 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-	function success() {
-		res.json({ "success": true, "edited article": Articles.getByID(req.params.id) });
+	function success(urlTitle) {
+		res.json({ "success": true, "edited article": Articles.getByID(urlTitle) });
 	}
 	function failure() {
 		res.json({ "success": false });
 	}
-	Articles.editByID(To.strToUrl(req.body.urlTitle), success, failure);
+	Articles.editByID(To.strToUrl(req.params.id), success, failure);
 });
 
 router.delete('/:id', (req, res) => {

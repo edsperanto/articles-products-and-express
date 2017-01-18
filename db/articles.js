@@ -47,11 +47,14 @@ module.exports = (function() {
 	}
 
 	function _editArticleHasValidFormat(data) {
-		let articleExists = typeof _list[data.title] === 'object';
-		let titleSpaceOnly = To.strToUrl(data.title) !== false;
+		let articleExists = typeof _list[To.urlToStr(data.urlTitle)] === 'object';
 		let noTitle = data.title === undefined;
 		let noAuthor = data.author === undefined;
 		let noBody = data.body === undefined;
+		let titleSpaceOnly = true;
+		if(!noTitle) {
+			titleSpaceOnly = To.strToUrl(data.title) !== false;
+		}
 		let titleIsStr = typeof data.title === 'string';
 		let authorIsStr = typeof data.author === 'string';
 		let bodyIsStr = typeof data.body === 'string';
@@ -74,17 +77,27 @@ module.exports = (function() {
 
 	function _editByID(data, success, failure) {
 		if(_editArticleHasValidFormat(data)) {
+			let title = To.urlToStr(data.urlTitle);
+			let oldData = _list[title];
+			if(data.title !== undefined) {
+				_list[data.title] = To.cloneObj(oldData);
+				delete _list[To.urlToStr(data.urlTitle)];
+				data.urlTitle = To.strToUrl(data.title);
+			}else{
+				data.title = title;
+			}
 			_updateArticle(data);
-			success();
+			success(data);
 		}else{
-			failure();
+			failure(data);
 		}
 	}
 
 	function _deleteByID(data, success, failure) {
-		let articleExists = typeof _list[data.id] === 'object';
+		let title = To.urlToStr(data.urlTitle);
+		let articleExists = typeof _list[title] === 'object';
 		if(articleExists) {
-			delete _list[data.id];
+			delete _list[title];
 			success();
 		}else{
 			failure();
