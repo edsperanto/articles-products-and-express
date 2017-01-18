@@ -103,7 +103,7 @@ describe('Products API', () => {
 					done();
 				});
 		});
-		it('should fulfill complete requests', done => {
+		it('should fulfill complete requests and create new product', done => {
 			let lemonade = my.product.lemonade;
 			agent.post('/api/products')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
@@ -135,7 +135,51 @@ describe('Products API', () => {
 	});
 
 	describe('PUT /api/products', () => {
-		it('should update old product', done => {
+		it('should allow empty requests', done => {
+			let lemonadeID = my.product.newLemonade.id;
+			agent.put(`/api/products/${lemonadeID}`)
+				.set('Content-Type', 'application/x-www-form-urlencoded')
+				.send({ "id": lemonadeID })
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					res.body.should.have.property('success');
+					res.body.success.should.be.true;
+					done();
+				});
+		});
+		it('should allow incomplete requests', done => {
+			let lemonadeID = my.product.newLemonade.id;
+			let incomplete = my.product.incomplete;
+			incomplete.id = lemonadeID;
+			agent.put(`/api/products/${lemonadeID}`)
+				.set('Content-Type', 'application/x-www-form-urlencoded')
+				.send(incomplete)
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					res.body.should.have.property('success');
+					res.body.success.should.be.true;
+					res.body.should.have.property('edited product');
+					res.body['edited product'].name.should.equal(incomplete.name);
+					done();
+				});
+		});
+		it('should prevent invalid price requests', done => {
+			let lemonadeID = my.product.newLemonade.id;
+			let invalidPrice = my.product.invalidPrice;
+			agent.put(`/api/products/${lemonadeID}`)
+				.set('Content-Type', 'application/x-www-form-urlencoded')
+				.send(invalidPrice)
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					res.body.should.have.property('success');
+					res.body.success.should.be.false;
+					done();
+				});
+		});
+		it('should fulfill valid requests and update old product', done => {
 			let newLemonade = my.product.newLemonade;
 			agent.put(`/api/products/${newLemonade.id}`)
 				.set('Content-Type', 'application/x-www-form-urlencoded')
