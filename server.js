@@ -21,6 +21,23 @@ app.set('view engine', 'hbs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(methodOverride('_method'));
+
+app.use((req, res, next) => {
+	let time = new Date();
+	let year = time.getFullYear();
+	let month = time.getMonth() + 1;
+	let date = time.getDate();
+	let hour = time.getHours();
+	let minute = time.getMinutes();
+	let second = time.getSeconds();
+	let millisecond = time.getMilliseconds();
+	let fileName = `${year}.${month}-${date}.${hour}-${minute}-${second}-${millisecond}.log`;
+	let log = `[${req.method}] [${req.path}] [${time.getTime()}]`;
+	console.log(fileName);
+	console.log(log);
+	next();
+});
+
 app.use('/test/articles', testArticles);
 app.use('/test/products', testProducts);
 app.use('/articles', articles);
