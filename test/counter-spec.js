@@ -6,6 +6,14 @@ const agent = supertest.agent(server);
 
 let my = {
 	product: {
+		incomplete: {
+			"name": "sushi"
+		},
+		invalidPrice: {
+			"name": "pencil",
+			"price": "Dixon Ticonderoga",
+			"inventory": "none"
+		},
 		lemonade: {
 			"name": "lemonade",
 			"price": "$1.25",
@@ -59,7 +67,43 @@ describe('Products API', () => {
 	});
 
 	describe('POST /api/products', () => {
-		it('should generate new product', done => {
+		it('should prevent empty requests', done => {
+			agent.post('/api/products')
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					res.body.should.have.property('success');
+					res.body.success.should.be.false;
+					done();
+				});
+		});
+		it('should prevent incomplete requests', done => {
+			let incomplete = my.product.incomplete;
+			agent.post('/api/products')
+				.set('Content-Type', 'application/x-www-form-urlencoded')
+				.send(incomplete)
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					res.body.should.have.property('success');
+					res.body.success.should.be.false;
+					done();
+				});
+		});
+		it('should prevent invalid price requests', done => {
+			let invalidPrice = my.product.invalidPrice;
+			agent.post('/api/products')
+				.set('Content-Type', 'application/x-www-form-urlencoded')
+				.send(invalidPrice)
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					res.body.should.have.property('success');
+					res.body.success.should.be.false;
+					done();
+				});
+		});
+		it('should fulfill complete requests', done => {
 			let lemonade = my.product.lemonade;
 			agent.post('/api/products')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
