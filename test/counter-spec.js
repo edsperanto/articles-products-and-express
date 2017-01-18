@@ -1,5 +1,6 @@
 const chai = require('chai');
 const should = chai.should();
+const To = require('../To');
 const server = require('../server');
 const supertest = require('supertest');
 const agent = supertest.agent(server);
@@ -141,9 +142,11 @@ describe('Products API', () => {
 						newProduct.should.have.property('name');
 						newProduct.should.have.property('price');
 						newProduct.should.have.property('inventory');
+						newProduct.should.have.property('notEmpty');
 						newProduct.name.should.equal(lemonade.name);
 						newProduct.price.should.equal(lemonade.price);
 						newProduct.inventory.should.equal(lemonade.inventory);
+						newProduct.notEmpty.should.be.true;
 						my.product.newLemonade.id = newProduct.id;
 					}
 					done();
@@ -329,7 +332,7 @@ describe('Products API', () => {
 
 describe('Articles API', () => {
 
-	describe('GET /api/products', () => {
+	describe('GET /api/articles', () => {
 		it('should be successful', done => {
 			agent.get('/api/articles')
 				.set('version', '1.0')
@@ -356,9 +359,10 @@ describe('Articles API', () => {
 		});
 	});
 
-	describe('POST /api/products', () => {
+	describe('POST /api/articles', () => {
 		it('should prevent empty requests', done => {
-			agent.post('/api/products')
+			agent.post('/api/articles')
+				.set('version', '1.0')
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
@@ -369,8 +373,9 @@ describe('Articles API', () => {
 				});
 		});
 		it('should prevent incomplete requests', done => {
-			let incomplete = my.product.incomplete;
-			agent.post('/api/products')
+			let incomplete = my.article.incomplete;
+			agent.post('/api/articles')
+				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
 				.send(incomplete)
 				.expect('Content-Type', /json/)
@@ -383,10 +388,11 @@ describe('Articles API', () => {
 				});
 		});
 		it('should prevent invalid price requests', done => {
-			let invalidPrice = my.product.invalidPrice;
-			agent.post('/api/products')
+			let invalidTitle = my.article.invalidTitle;
+			agent.post('/api/articles')
+				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
-				.send(invalidPrice)
+				.send(invalidTitle)
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
@@ -397,30 +403,33 @@ describe('Articles API', () => {
 				});
 		});
 		it('should fulfill valid requests and create new product', done => {
-			let lemonade = my.product.lemonade;
-			agent.post('/api/products')
+			let Obama = my.article.Obama;
+			agent.post('/api/articles')
+				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
-				.send(lemonade)
+				.send(Obama)
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
-					let newProduct;
+					let newArticle;
 					if(err) throw err;
 					res.body.should.have.property('success');
 					res.body.success.should.be.a('Boolean');
 					res.body.success.should.be.true;
-					res.body.should.have.property('new product');
-					if(res.body['new product'] !== undefined) {
-						newProduct = res.body['new product'];
-						newProduct.should.be.a('Object');
-						newProduct.should.have.property('id');
-						newProduct.should.have.property('name');
-						newProduct.should.have.property('price');
-						newProduct.should.have.property('inventory');
-						newProduct.name.should.equal(lemonade.name);
-						newProduct.price.should.equal(lemonade.price);
-						newProduct.inventory.should.equal(lemonade.inventory);
-						my.product.newLemonade.id = newProduct.id;
+					res.body.should.have.property('new article');
+					if(res.body['new article'] !== undefined) {
+						newArticle = res.body['new article'][Obama.title];
+						newArticle.should.be.a('Object');
+						newArticle.should.have.property('title');
+						newArticle.should.have.property('author');
+						newArticle.should.have.property('body');
+						newArticle.should.have.property('urlTitle');
+						newArticle.should.have.property('id');
+						newArticle.should.have.property('notEmpty');
+						newArticle.title.should.equal(Obama.title);
+						newArticle.author.should.equal(Obama.author);
+						newArticle.body.should.equal(Obama.body);
+						newArticle.urlTitle.should.equal(To.strToUrl(Obama.title));
 					}
 					done();
 				});
@@ -431,6 +440,7 @@ describe('Articles API', () => {
 		it('should allow empty requests', done => {
 			let lemonadeID = my.product.newLemonade.id;
 			agent.put(`/api/products/${lemonadeID}`)
+				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
 				.send({ "id": lemonadeID })
 				.expect('Content-Type', /json/)
@@ -447,6 +457,7 @@ describe('Articles API', () => {
 			let incomplete = my.product.incomplete;
 			incomplete.id = lemonadeID;
 			agent.put(`/api/products/${lemonadeID}`)
+				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
 				.send(incomplete)
 				.expect('Content-Type', /json/)
@@ -462,6 +473,7 @@ describe('Articles API', () => {
 		});
 		it('should prevent non-existent product requests', done => {
 			agent.put(`/api/products/whatevers`)
+				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
 				.send({ "id": "123456" })
 				.expect('Content-Type', /json/)
@@ -477,6 +489,7 @@ describe('Articles API', () => {
 			let lemonadeID = my.product.newLemonade.id;
 			let invalidPrice = my.product.invalidPrice;
 			agent.put(`/api/products/${lemonadeID}`)
+				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
 				.send(invalidPrice)
 				.expect('Content-Type', /json/)
@@ -491,6 +504,7 @@ describe('Articles API', () => {
 		it('should fulfill valid requests and update old product', done => {
 			let newLemonade = my.product.newLemonade;
 			agent.put(`/api/products/${newLemonade.id}`)
+				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
 				.send(newLemonade)
 				.expect('Content-Type', /json/)
@@ -522,6 +536,7 @@ describe('Articles API', () => {
 		it('should prevent invalid IDs', done => {
 			let invalidID = my.product.newLemonade.id + 1;
 			agent.delete(`/api/products/${invalidID}`)
+				.set('version', '1.0')
 				.send({ "id": invalidID })
 				.expect('Content-Type', /json/)
 				.expect(200)
@@ -536,6 +551,7 @@ describe('Articles API', () => {
 			let invalidID = my.product.newLemonade.id + 1;
 			let lemonadeID = my.product.newLemonade.id;
 			agent.delete(`/api/products/${invalidID}`)
+				.set('version', '1.0')
 				.send({ "id": lemonadeID })
 				.expect('Content-Type', /json/)
 				.expect(200)
@@ -549,6 +565,7 @@ describe('Articles API', () => {
 		});
 		it('should prevent non-existent product requests', done => {
 			agent.delete(`/api/products/123456`)
+				.set('version', '1.0')
 				.send({ "id": "123456" })
 				.expect('Content-Type', /json/)
 				.expect(200)
@@ -563,6 +580,7 @@ describe('Articles API', () => {
 		it('should fulfill valid requests and delete product', done => {
 			let lemonadeID = my.product.newLemonade.id;
 			agent.delete(`/api/products/${lemonadeID}`)
+				.set('version', '1.0')
 				.send({ "id": lemonadeID })
 				.expect('Content-Type', /json/)
 				.expect(200)
@@ -579,6 +597,7 @@ describe('Articles API', () => {
 			let lemonade = my.product.lemonade;
 			let lemonadeID;
 			agent.post('/api/products')
+				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
 				.send(lemonade)
 				.end((err, res) => {
@@ -587,6 +606,7 @@ describe('Articles API', () => {
 					done();
 				});
 			agent.delete(`/api/products/${lemonadeID}`)
+				.set('version', '1.0')
 				.send({ "id": `"${lemonadeID}"` })
 				.expect('Content-Type', /json/)
 				.expect(200)

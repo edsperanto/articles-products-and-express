@@ -18,7 +18,10 @@ module.exports = (function() {
 
 	function _newArticleHasValidFormat(data) {
 		let titleIsStr = typeof data.title === 'string';
-		let titleSpaceOnly = To.strToUrl(data.title) !== false;
+		let titleSpaceOnly = true;
+		if(titleIsStr) {
+			titleSpaceOnly = To.strToUrl(data.title) !== false;
+		}
 		let authorIsStr = typeof data.author === 'string';
 		let bodyIsStr = typeof data.body === 'string';
 		return titleIsStr && titleSpaceOnly && authorIsStr && bodyIsStr;
