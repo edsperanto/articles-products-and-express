@@ -27,14 +27,12 @@
 	let name = document.getElementById('name');
 	let price = document.getElementById('price');
 	let inventory = document.getElementById('inventory');
-	console.log(window.location.pathname.split('/')[2].substr(0, 3));
 	let form = document.getElementById('form');
 	toSaveProduct.addEventListener('click', () => {
 		let nameFilled = name.value !== '';
 		let priceFilled = price.value !== '';
 		let inventoryFilled = inventory.value !== '';
 		if(nameFilled && priceFilled && inventoryFilled) {
-			console.log("SUBMITTING");
 			form.submit();
 		}else{
 			document.getElementById('err-msg').innerText = 'Please complete all fields';
