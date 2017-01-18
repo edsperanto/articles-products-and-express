@@ -9,7 +9,7 @@ router.use((req, res, next) => {
 	if(String(req.headers.version) !== '1.0') {
 		res.json({ "error": "bad headers" });
 	}else{
-		res.next();
+		next();
 	}
 });
 
