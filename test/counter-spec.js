@@ -41,6 +41,7 @@ let my = {
 			"body": "He was born in Kenya (confirmed)"
 		},
 		newObama: {
+			"urlTitle": "",
 			"title": "Obama gift certification lost",
 			"author": "Fox Real News",
 			"body": "Obama destroys evidence of treason by burning birth certificate"
@@ -156,6 +157,7 @@ describe('Products API', () => {
 
 	describe('PUT /api/products/:id', () => {
 		it('should allow empty requests', done => {
+			let lemonade = my.product.lemonade;
 			let lemonadeID = my.product.newLemonade.id;
 			agent.put(`/api/products/${lemonadeID}`)
 				.set('Content-Type', 'application/x-www-form-urlencoded')
@@ -163,9 +165,25 @@ describe('Products API', () => {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
+					let editedProduct;
 					if(err) throw err;
 					res.body.should.have.property('success');
+					res.body.success.should.be.a('Boolean');
 					res.body.success.should.be.true;
+					res.body.should.have.property('edited product');
+					if(res.body['edited product'] !== undefined) {
+						editedProduct = res.body['edited product'];
+						editedProduct.should.be.a('Object');
+						editedProduct.should.have.property('id');
+						editedProduct.should.have.property('name');
+						editedProduct.should.have.property('price');
+						editedProduct.should.have.property('inventory');
+						editedProduct.should.have.property('notEmpty');
+						editedProduct.name.should.equal(lemonade.name);
+						editedProduct.price.should.equal(lemonade.price);
+						editedProduct.inventory.should.equal(lemonade.inventory);
+						editedProduct.notEmpty.should.be.true;
+					}
 					done();
 				});
 		});
@@ -430,19 +448,21 @@ describe('Articles API', () => {
 						newArticle.author.should.equal(Obama.author);
 						newArticle.body.should.equal(Obama.body);
 						newArticle.urlTitle.should.equal(To.strToUrl(Obama.title));
+						my.article.newObama.urlTitle = newArticle.urlTitle;
+						my.article.newObama.id = newArticle.id;
 					}
 					done();
 				});
 		});
 	});
 
-	describe('PUT /api/products/:id', () => {
+	describe('PUT /api/articles/:id', () => {
 		it('should allow empty requests', done => {
-			let lemonadeID = my.product.newLemonade.id;
-			agent.put(`/api/products/${lemonadeID}`)
+			let newObamaUrl = my.article.newObama.urlTitle;
+			agent.put(`/api/articles/${newObamaUrl}`)
 				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
-				.send({ "id": lemonadeID })
+				.send({ "urlTitle": newObamaUrl })
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
@@ -453,29 +473,46 @@ describe('Articles API', () => {
 				});
 		});
 		it('should allow incomplete requests', done => {
-			let lemonadeID = my.product.newLemonade.id;
-			let incomplete = my.product.incomplete;
-			incomplete.id = lemonadeID;
-			agent.put(`/api/products/${lemonadeID}`)
+			let Obama = my.article.Obama;
+			let newObamaUrl = my.article.newObama.urlTitle;
+			let incomplete = my.article.incomplete;
+			incomplete.urlTitle = newObamaUrl;
+			agent.put(`/api/articles/${newObamaUrl}`)
 				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
 				.send(incomplete)
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
+					let editArticle;
 					if(err) throw err;
 					res.body.should.have.property('success');
+					res.body.success.should.be.a('Boolean');
 					res.body.success.should.be.true;
-					res.body.should.have.property('edited product');
-					res.body['edited product'].name.should.equal(incomplete.name);
+					res.body.should.have.property('edited article');
+					if(res.body['edited article'] !== undefined) {
+						editArticle = res.body['edited article'];
+						editArticle.should.be.a('Object');
+						editArticle.should.have.property('title');
+						editArticle.should.have.property('author');
+						editArticle.should.have.property('body');
+						editArticle.should.have.property('urlTitle');
+						editArticle.should.have.property('id');
+						editArticle.should.have.property('notEmpty');
+						editArticle.title.should.equal(incomplete.title);
+						editArticle.author.should.equal(Obama.author);
+						editArticle.body.should.equal(Obama.body);
+						editArticle.urlTitle.should.equal(To.strToUrl(incomplete.title));
+						my.article.newObama.urlTitle = editArticle.urlTitle;
+					}
 					done();
 				});
 		});
-		it('should prevent non-existent product requests', done => {
-			agent.put(`/api/products/whatevers`)
+		it('should prevent non-existent article requests', done => {
+			agent.put(`/api/articles/whatevers`)
 				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
-				.send({ "id": "123456" })
+				.send({ "urlTitle": "mygoshlolwow" })
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
@@ -485,13 +522,14 @@ describe('Articles API', () => {
 					done();
 				});
 		});
-		it('should prevent invalid price requests', done => {
-			let lemonadeID = my.product.newLemonade.id;
-			let invalidPrice = my.product.invalidPrice;
-			agent.put(`/api/products/${lemonadeID}`)
+		it('should prevent invalid title requests', done => {
+			let newObamaUrl = my.article.newObama.urlTitle;
+			let invalidTitle = my.article.invalidTitle;
+			invalidTitle.urlTitle = newObamaUrl;
+			agent.put(`/api/articles/${newObamaUrl}`)
 				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
-				.send(invalidPrice)
+				.send(invalidTitle)
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
@@ -502,30 +540,31 @@ describe('Articles API', () => {
 				});
 		});
 		it('should fulfill valid requests and update old product', done => {
-			let newLemonade = my.product.newLemonade;
-			agent.put(`/api/products/${newLemonade.id}`)
+			let newObama = my.article.newObama;
+			agent.put(`/api/articles/${newObama.urlTitle}`)
 				.set('version', '1.0')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
-				.send(newLemonade)
+				.send(newObama)
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
-					let editProduct;
+					let editArticle;
 					if(err) throw err;
 					res.body.should.have.property('success');
 					res.body.success.should.be.a('Boolean');
 					res.body.success.should.be.true;
-					res.body.should.have.property('edited product');
-					if(res.body['new product'] !== undefined) {
-						editProduct = res.body['edited product'];
-						editProduct.should.be.a('Object');
-						editProduct.should.have.property('id');
-						editProduct.should.have.property('name');
-						editProduct.should.have.property('price');
-						editProduct.should.have.property('inventory');
-						editProduct.name.should.equal(newLemonade.name);
-						editProduct.price.should.equal(newLemonade.price);
-						editProduct.inventory.should.equal(newLemonade.inventory);
+					res.body.should.have.property('edited article');
+					if(res.body['edited article'] !== undefined) {
+						editArticle = res.body['edited article'];
+						editArticle.should.be.a('Object');
+						editArticle.should.have.property('title');
+						editArticle.should.have.property('author');
+						editArticle.should.have.property('body');
+						editArticle.should.have.property('urlTitle');
+						editArticle.title.should.equal(newObama.title);
+						editArticle.author.should.equal(newObama.author);
+						editArticle.body.should.equal(newObama.body);
+						editArticle.urlTitle.should.equal(To.strToUrl(newObama.title));
 					}
 					done();
 				});
