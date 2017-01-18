@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const handlebars = require('express-handlebars');
@@ -31,10 +32,11 @@ app.use((req, res, next) => {
 	let minute = time.getMinutes();
 	let second = time.getSeconds();
 	let millisecond = time.getMilliseconds();
-	let fileName = `${year}.${month}-${date}.${hour}-${minute}-${second}-${millisecond}.log`;
+	let fileName = `logs/${year}.${month}-${date}.${hour}-${minute}-${second}-${millisecond}.log`;
 	let log = `[${req.method}] [${req.path}] [${time.getTime()}]`;
-	console.log(fileName);
-	console.log(log);
+	fs.writeFile(fileName, log, 'utf8', (err) => {
+		if (err) throw err;
+	});
 	next();
 });
 
