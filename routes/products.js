@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
 const Products = require('../db/products');
-const To = require('../To');
+const To = require('../helpers/To');
 
 router.get('/', (req, res) => {
 	res.render("products", { "allProducts": true, "product": Products.all() });

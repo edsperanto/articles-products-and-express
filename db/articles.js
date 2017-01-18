@@ -1,4 +1,4 @@
-const To = require('../To');
+const To = require('../helpers/To');
 
 module.exports = (function() {
 

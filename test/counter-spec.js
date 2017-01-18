@@ -1,6 +1,6 @@
 const chai = require('chai');
 const should = chai.should();
-const To = require('../To');
+const To = require('../helpers/To');
 const server = require('../server');
 const supertest = require('supertest');
 const agent = supertest.agent(server);

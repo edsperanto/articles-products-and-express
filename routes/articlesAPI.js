@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
 const Articles = require('../db/articles');
-const To = require('../To');
+const To = require('../helpers/To');
 
 router.use((req, res, next) => {
 	res.append('version', '1.0');
