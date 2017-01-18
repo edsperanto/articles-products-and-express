@@ -13,7 +13,7 @@
     	}
         html {
             color: black;
-            font-size: 23px;
+            font-size: 18px;
             font-family: sans-serif;
             background-color: #67727A;
         }
@@ -133,12 +133,25 @@
             background-color: #8A1E1E;
             cursor: pointer;
         }
-        @media screen and (max-width: 700px) {
+        @media screen and (max-width: 550px) {
             html {
                 font-size: 15px;
             }
+            .index-menu {
+                padding: 0.5rem;
+            }
+            .item {
+                margin-top: 2rem;
+            }
+            #menu {
+                margin-top: -1rem;
+                margin-bottom: -1rem;
+            }
         }
         @media screen and (min-width: 1065px) {
+            html {
+                font-size: 20px;
+            }
             .index-menu {
                 width: 10rem !important;
             }
