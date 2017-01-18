@@ -80,8 +80,9 @@ module.exports = (function() {
 	}
 
 	function _deleteByID(data, success, failure) {
+		let ID = parseInt(data.id);
 		let productExists = typeof _list[data.id] === 'object';
-		if(productExists) {
+		if(productExists && isNaN(ID) === false) {
 			delete _list[data.id];
 			success();
 		}else{

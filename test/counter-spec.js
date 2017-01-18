@@ -184,6 +184,19 @@ describe('Products API', () => {
 					done();
 				});
 		});
+		it('should prevent non-existent product requests', done => {
+			agent.put(`/api/products/whatevers`)
+				.set('Content-Type', 'application/x-www-form-urlencoded')
+				.send({ "id": "123456" })
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					if(err) throw err;
+					res.body.should.have.property('success');
+					res.body.success.should.be.false;
+					done();
+				});
+		});
 		it('should prevent invalid price requests', done => {
 			let lemonadeID = my.product.newLemonade.id;
 			let invalidPrice = my.product.invalidPrice;
@@ -258,10 +271,47 @@ describe('Products API', () => {
 					done();
 				});
 		});
+		it('should prevent non-existent product requests', done => {
+			agent.delete(`/api/products/123456`)
+				.send({ "id": "123456" })
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					if(err) throw err;
+					res.body.should.have.property('success');
+					res.body.success.should.be.a('Boolean');
+					res.body.success.should.be.false;
+					done();
+				});
+		});
 		it('should fulfill valid requests and delete product', done => {
 			let lemonadeID = my.product.newLemonade.id;
 			agent.delete(`/api/products/${lemonadeID}`)
 				.send({ "id": lemonadeID })
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					if(err) throw err;
+					res.body.should.have.property('success');
+					res.body.should.have.property('new product list');
+					res.body.success.should.be.a('Boolean');
+					res.body.success.should.be.true;
+					done();
+				});
+		});
+		it('should allow product ID as string in json', done => {
+			let lemonade = my.product.lemonade;
+			let lemonadeID;
+			agent.post('/api/products')
+				.set('Content-Type', 'application/x-www-form-urlencoded')
+				.send(lemonade)
+				.end((err, res) => {
+					if(err) throw err;
+					lemonadeID = res.body['new product'].id;
+					done();
+				});
+			agent.delete(`/api/products/${lemonadeID}`)
+				.send({ "id": `"${lemonadeID}"` })
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
@@ -410,6 +460,19 @@ describe('Articles API', () => {
 					done();
 				});
 		});
+		it('should prevent non-existent product requests', done => {
+			agent.put(`/api/products/whatevers`)
+				.set('Content-Type', 'application/x-www-form-urlencoded')
+				.send({ "id": "123456" })
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					if(err) throw err;
+					res.body.should.have.property('success');
+					res.body.success.should.be.false;
+					done();
+				});
+		});
 		it('should prevent invalid price requests', done => {
 			let lemonadeID = my.product.newLemonade.id;
 			let invalidPrice = my.product.invalidPrice;
@@ -484,10 +547,47 @@ describe('Articles API', () => {
 					done();
 				});
 		});
+		it('should prevent non-existent product requests', done => {
+			agent.delete(`/api/products/123456`)
+				.send({ "id": "123456" })
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					if(err) throw err;
+					res.body.should.have.property('success');
+					res.body.success.should.be.a('Boolean');
+					res.body.success.should.be.false;
+					done();
+				});
+		});
 		it('should fulfill valid requests and delete product', done => {
 			let lemonadeID = my.product.newLemonade.id;
 			agent.delete(`/api/products/${lemonadeID}`)
 				.send({ "id": lemonadeID })
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					if(err) throw err;
+					res.body.should.have.property('success');
+					res.body.should.have.property('new product list');
+					res.body.success.should.be.a('Boolean');
+					res.body.success.should.be.true;
+					done();
+				});
+		});
+		it('should allow product ID as string in json', done => {
+			let lemonade = my.product.lemonade;
+			let lemonadeID;
+			agent.post('/api/products')
+				.set('Content-Type', 'application/x-www-form-urlencoded')
+				.send(lemonade)
+				.end((err, res) => {
+					if(err) throw err;
+					lemonadeID = res.body['new product'].id;
+					done();
+				});
+			agent.delete(`/api/products/${lemonadeID}`)
+				.send({ "id": `"${lemonadeID}"` })
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
