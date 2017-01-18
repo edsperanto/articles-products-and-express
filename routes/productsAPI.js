@@ -5,13 +5,12 @@ const Products = require('../db/products');
 const To = require('../To');
 
 router.get('/', (req, res) => {
-	let productListData = Products.all();
-	res.json({ "success": true, "product list": productListData });
+	res.json({ "success": true, "product list": Products.all() });
 });
 
 router.get('/reset', (req, res) => {
 	Products.reset();
-	end();
+	res.json({ "success": true, "product list": Products.all() });
 });
 
 router.get('/:id', (req, res) => {

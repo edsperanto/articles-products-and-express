@@ -9,18 +9,17 @@ router.use((req, res, next) => {
 	if(String(req.headers.version) !== '1.0') {
 		res.json({ "error": "bad headers" });
 	}else{
-		next();
+		res.next();
 	}
 });
 
 router.get('/', (req, res) => {
-	let articleListData = Articles.all();
-	res.json({ "success": true, "article list": articleListData });
+	res.json({ "success": true, "article list": Articles.all() });
 });
 
 router.get('/reset', (req, res) => {
 	Articles.reset();
-	end();
+	res.json({ "success": true, "article list": Articles.all() });
 });
 
 router.get('/:id', (req, res) => {
