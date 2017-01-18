@@ -37,9 +37,8 @@ router.get('/:id/edit', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	function success() {
-		console.log("SUCCESS!!!!");
-		res.render("articles", { "allArticles": true, "article": Articles.all() });
+	function success(article) {
+		res.render("articles", { "allArticles": true, "article": article });
 	}
 	function failure() {
 		res.redirect(303, `/articles/new/err`);
@@ -73,7 +72,7 @@ router.put('/:id', (req, res) => {
 		articleData.err = true;
 		res.render("articles", { "editArticle": true, "article": articleData });
 	}
-	Articles.editByID(req.body, success, failure);
+	Articles.editByID(To.strToUrl(urlID), success, failure);
 });
 
 router.put('/:id/test', (req, res) => {
@@ -83,7 +82,7 @@ router.put('/:id/test', (req, res) => {
 	function failure() {
 		res.json({ "success": false });
 	}
-	Articles.editByID(req.body, success, failure);
+	Articles.editByID(To.strToUrl(req.body.urlTitle), success, failure);
 });
 
 router.delete('/:id', (req, res) => {

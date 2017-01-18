@@ -40,7 +40,7 @@
 		let toEditArticle = document.getElementById('to-edit-article');
 		let toDiscardArticle = document.getElementById('to-discard-article');
 		let toSaveArticle = document.getElementById('to-save-article');
-		let empty{{id}} = "{{article.name}}" === "Article Does Not Exist" || "{{article.name}}" === "Article List is Empty";
+		let empty{{article.id}} = "{{article.title}}" === "Article Does Not Exist" || "{{article.title}}" === "Article List is Empty";
 		function linkTo(ele, link) {
 			ele.addEventListener('click', () => {
 				window.location = link;
@@ -52,21 +52,21 @@
 		{{/if}}
 		{{#if oneArticle}}
 			linkTo(toArticles, '/articles');
-			linkTo(toEditArticle, '/articles/{{article.id}}/edit');
-			if(empty{{id}}) {
+			linkTo(toEditArticle, '/articles/{{article.urlTitle}}/edit');
+			if(empty{{article.id}}) {
 				toEditArticle.style.display = 'none';
 			}
 		{{/if}}
 		{{#if editArticle}}
-			linkTo(toDiscardArticle, '/articles/{{article.id}}');
-			if(empty{{id}}) {
+			linkTo(toDiscardArticle, '/articles/{{article.urlTitle}}');
+			if(empty{{article.id}}) {
 				toDiscardArticle.style.display = 'none';
 				toSaveArticle.style.display = 'none';
 			}
 		{{/if}}
 		{{#if newArticle}}
 			linkTo(toDiscardArticle, '/articles');
-			if(empty{{id}}) {
+			if(empty{{article.id}}) {
 				toDiscardArticle.style.display = 'none';
 				toSaveArticle.style.display = 'none';
 			}

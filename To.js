@@ -20,4 +20,21 @@ function moneyToNum(price) {
 	return isNaN(priceNum) ? false : priceNum;
 }
 
-module.exports = { cloneObj, rndStr, moneyToNum };
+function strToUrl(str) {
+	let regex = /^([A-Za-z0-9])[A-Za-z0-9 ]*$/;
+	let strArr = [];
+	let newStr = "";
+	for(let i = 0; i < str.length; i++) {
+		strArr.push(str[i]);
+	}
+	if(regex.test(str)) {
+		strArr.forEach(ch => {
+			newStr += (ch === ' ') ? ("%20") : (ch);
+		});
+		return newStr;
+	}else{
+		return false;
+	}
+}
+
+module.exports = { cloneObj, rndStr, moneyToNum, strToUrl };

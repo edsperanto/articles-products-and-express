@@ -5,36 +5,34 @@
 			<table>
 				<tr id='error' style='display: none;'>
 					<td style='color: red;'>Error:</td>
-					<td class='detail-data' id='err-msg' style='color: red; border-width: 0;'>Price must be a number</td>
+					<td class='detail-data' id='err-msg' style='color: red; border-width: 0;'>Only [0-9], [a-Z], and spaces are allowed</td>
 				</tr>
 				<tr>
-					<td>Name</td>
-					<td class='detail-data'><input type='text' name='name' id='name'></td>
+					<td>Title</td>
+					<td class='detail-data'><input type='text' name='title' id='title'></td>
 				</tr>
 				<tr>
-					<td>Price</td>
-					<td class='detail-data'><input type='text' name='price' id='price'></td>
+					<td>Author</td>
+					<td class='detail-data'><input type='text' name='author' id='author'></td>
 				</tr>
 				<tr>
-					<td>Inventory</td>
-					<td class='detail-data'><input type='text' name='inventory' id='inventory'></td>
+					<td>Body</td>
+					<td class='detail-data'><input type='text' name='body' id='body'></td>
 				</tr>
 			</table>
 		</form>
 	</ul>
 </div>
 <script>
-	let name = document.getElementById('name');
-	let price = document.getElementById('price');
-	let inventory = document.getElementById('inventory');
-	console.log(window.location.pathname.split('/')[2].substr(0, 3));
+	let title = document.getElementById('title');
+	let author = document.getElementById('author');
+	let body = document.getElementById('body');
 	let form = document.getElementById('form');
 	toSaveArticle.addEventListener('click', () => {
-		let nameFilled = name.value !== '';
-		let priceFilled = price.value !== '';
-		let inventoryFilled = inventory.value !== '';
-		if(nameFilled && priceFilled && inventoryFilled) {
-			console.log("SUBMITTING");
+		let titleFilled = title.value !== '';
+		let authorFilled = author.value !== '';
+		let bodyFilled = body.value !== '';
+		if(titleFilled && authorFilled && bodyFilled) {
 			form.submit();
 		}else{
 			document.getElementById('err-msg').innerText = 'Please complete all fields';

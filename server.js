@@ -5,6 +5,8 @@ const methodOverride = require('method-override');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const testArticles = require('./routes/testArticles');
+const testProducts = require('./routes/testProducts');
 const articles = require('./routes/articles');
 const products = require('./routes/products');
 
@@ -19,6 +21,8 @@ app.set('view engine', 'hbs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(methodOverride('_method'));
+app.use('/test/articles', testArticles);
+app.use('/test/products', testProducts);
 app.use('/articles', articles);
 app.use('/products', products);
 
