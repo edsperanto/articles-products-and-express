@@ -25,13 +25,18 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-	function success(urlTitle) {
-		res.json({ "success": true, "edited article": Articles.getByID(urlTitle) });
+	for(key in req.body) {
+		if(req.body[key] === "") {
+			req.body[key] = undefined;
+		}
+	}
+	function success(data) {
+		res.json({ "success": true, "edited article": Articles.getByID(data.title) });
 	}
 	function failure() {
 		res.json({ "success": false });
 	}
-	Articles.editByID(To.strToUrl(req.params.id), success, failure);
+	Articles.editByID(req.body, success, failure);
 });
 
 router.delete('/:id', (req, res) => {
