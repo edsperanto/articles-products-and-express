@@ -4,6 +4,15 @@ const router = express.Router();
 const Articles = require('../db/articles');
 const To = require('../To');
 
+router.use((req, res, next) => {
+	res.append('version', '1.0');
+	if(String(req.headers.version) !== '1.0') {
+		res.json({ "error": "bad headers" });
+	}else{
+		next();
+	}
+});
+
 router.get('/', (req, res) => {
 	let articleListData = Articles.all();
 	res.json({ "success": true, "article list": articleListData });
