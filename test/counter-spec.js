@@ -72,6 +72,7 @@ describe('Products API', () => {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
+					if(err) throw err;
 					res.body.should.have.property('success');
 					res.body.success.should.be.false;
 					done();
@@ -85,6 +86,7 @@ describe('Products API', () => {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
+					if(err) throw err;
 					res.body.should.have.property('success');
 					res.body.success.should.be.false;
 					done();
@@ -98,12 +100,13 @@ describe('Products API', () => {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
+					if(err) throw err;
 					res.body.should.have.property('success');
 					res.body.success.should.be.false;
 					done();
 				});
 		});
-		it('should fulfill complete requests and create new product', done => {
+		it('should fulfill valid requests and create new product', done => {
 			let lemonade = my.product.lemonade;
 			agent.post('/api/products')
 				.set('Content-Type', 'application/x-www-form-urlencoded')
@@ -134,7 +137,7 @@ describe('Products API', () => {
 		});
 	});
 
-	describe('PUT /api/products', () => {
+	describe('PUT /api/products/:id', () => {
 		it('should allow empty requests', done => {
 			let lemonadeID = my.product.newLemonade.id;
 			agent.put(`/api/products/${lemonadeID}`)
@@ -143,6 +146,7 @@ describe('Products API', () => {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
+					if(err) throw err;
 					res.body.should.have.property('success');
 					res.body.success.should.be.true;
 					done();
@@ -158,6 +162,7 @@ describe('Products API', () => {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
+					if(err) throw err;
 					res.body.should.have.property('success');
 					res.body.success.should.be.true;
 					res.body.should.have.property('edited product');
@@ -174,6 +179,7 @@ describe('Products API', () => {
 				.expect('Content-Type', /json/)
 				.expect(200)
 				.end((err, res) => {
+					if(err) throw err;
 					res.body.should.have.property('success');
 					res.body.success.should.be.false;
 					done();
@@ -204,6 +210,52 @@ describe('Products API', () => {
 						editProduct.price.should.equal(newLemonade.price);
 						editProduct.inventory.should.equal(newLemonade.inventory);
 					}
+					done();
+				});
+		});
+	});
+
+	describe('DELETE /api/products/:id', () => {
+		it('should prevent invalid IDs', done => {
+			let invalidID = my.product.newLemonade.id + 1;
+			agent.delete(`/api/products/${invalidID}`)
+				.send({ "id": invalidID })
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					res.body.should.have.property('success');
+					res.body.success.should.be.a('Boolean');
+					res.body.success.should.be.false;
+					done();
+				});
+		});
+		it('should prevent different IDs in URI and body', done => {
+			let invalidID = my.product.newLemonade.id + 1;
+			let lemonadeID = my.product.newLemonade.id;
+			agent.delete(`/api/products/${invalidID}`)
+				.send({ "id": lemonadeID })
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					if(err) throw err;
+					res.body.should.have.property('success');
+					res.body.success.should.be.a('Boolean');
+					res.body.success.should.be.false;
+					done();
+				});
+		});
+		it('should fulfill valid requests and delete product', done => {
+			let lemonadeID = my.product.newLemonade.id;
+			agent.delete(`/api/products/${lemonadeID}`)
+				.send({ "id": lemonadeID })
+				.expect('Content-Type', /json/)
+				.expect(200)
+				.end((err, res) => {
+					if(err) throw err;
+					res.body.should.have.property('success');
+					res.body.should.have.property('new product list');
+					res.body.success.should.be.a('Boolean');
+					res.body.success.should.be.true;
 					done();
 				});
 		});

@@ -45,7 +45,11 @@ router.delete('/:id', (req, res) => {
 	function failure() {
 		res.json({ "success": false });
 	}
-	Products.deleteByID(req.body, success, failure);
+	if(req.params.id !== req.body.id) {
+		failure();
+	}else{
+		Products.deleteByID(req.body, success, failure);
+	}
 });
 
 module.exports = router;

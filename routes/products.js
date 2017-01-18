@@ -62,7 +62,11 @@ router.delete('/:id', (req, res) => {
 	function failure() {
 		res.redirect(303, `/products/${req.body.id}`);
 	}
-	Products.deleteByID(req.body, success, failure);
+	if(req.params.id !== req.body.id) {
+		failure();
+	}else{
+		Products.deleteByID(req.body, success, failure);
+	}
 });
 
 module.exports = router;
