@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const handlebars = require('express-handlebars');
 const methodOverride = require('method-override');
 const app = express();
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3000;
 
 const testArticles = require('./routes/articlesAPI');
 const testProducts = require('./routes/productsAPI');
