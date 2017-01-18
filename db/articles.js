@@ -104,12 +104,17 @@ module.exports = (function() {
 		}
 	}
 
+	function _reset() {
+		_list = {};
+	}
+
 	return {
 		all: _all,
 		add: _add,
 		getByID: _getByID,
 		editByID: _editByID,
-		deleteByID: _deleteByID
+		deleteByID: _deleteByID,
+		reset: _reset
 	}
 
 })();

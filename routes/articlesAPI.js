@@ -18,6 +18,11 @@ router.get('/', (req, res) => {
 	res.json({ "success": true, "article list": articleListData });
 });
 
+router.get('/reset', (req, res) => {
+	Articles.reset();
+	end();
+});
+
 router.get('/:id', (req, res) => {
 	let articleData = Articles.getByID(req.params.id);
 	res.json({ "success": true, "article": articleData });

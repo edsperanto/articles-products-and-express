@@ -4,10 +4,10 @@ const bodyParser = require('body-parser');
 const handlebars = require('express-handlebars');
 const methodOverride = require('method-override');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 80;
 
-const testArticles = require('./routes/testArticles');
-const testProducts = require('./routes/testProducts');
+const testArticles = require('./routes/articlesAPI');
+const testProducts = require('./routes/productsAPI');
 const articles = require('./routes/articles');
 const products = require('./routes/products');
 
@@ -40,15 +40,19 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use('/test/articles', testArticles);
-app.use('/test/products', testProducts);
-app.use('/articles', articles);
-app.use('/products', products);
-
 app.get('/', (req, res) => {
 	res.render('index', { "atIndex": true });
 });
 
-app.listen(PORT, () => {
-	console.log(`Server listening on port ${PORT}`);
-});
+app.use('/api/articles', testArticles);
+app.use('/api/products', testProducts);
+app.use('/articles', articles);
+app.use('/products', products);
+
+if(!module.parent){ 
+    app.listen(PORT, () => {
+		console.log(`Server listening on port ${PORT}`);
+	}); 
+}
+
+module.exports = app;

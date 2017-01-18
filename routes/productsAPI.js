@@ -9,6 +9,11 @@ router.get('/', (req, res) => {
 	res.json({ "success": true, "product list": productListData });
 });
 
+router.get('/reset', (req, res) => {
+	Products.reset();
+	end();
+});
+
 router.get('/:id', (req, res) => {
 	let productData = Products.getByID(req.params.id);
 	res.json({ "success": true, "product": productData });
