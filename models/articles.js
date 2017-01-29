@@ -13,9 +13,10 @@ module.exports = (function() {
 	function _all() {
 		return db.many('SELECT * FROM "articles";')
 			.then(articlesList => {
+				console.log("showing", articlesList);
 				let outputObj = {};
-				productsList.forEach(article => {
-					outputObj[article.title] = product;
+				articlesList.forEach(article => {
+					outputObj[article.title] = article;
 					outputObj[article.title]['notEmpty'] = true;
 				});
 				return outputObj;
@@ -23,19 +24,19 @@ module.exports = (function() {
 	}
 
 	function _getByID(id) {
-		return db.one(`SELECT * FROM "products" WHERE id = ${id};`)
-			.then(productData => {
-				productData.notEmpty = true;
-				return productData;
+		return db.one(`SELECT * FROM "articles" WHERE urltitle = ${id};`)
+			.then(articleData => {
+				articleData.notEmpty = true;
+				return articleData;
 			});
 	}
 
 	function _add(data) {
 		let price = To.moneyToNum(data.price);
-		return db.none(`INSERT INTO "products" (name, price, inventory) VALUES ('${data.name}', ${price}, '${data.inventory}');`);
+		return db.none(`INSERT INTO "articles" (name, price, inventory) VALUES ('${data.name}', ${price}, '${data.inventory}');`);
 	}
 
-	function _editProductHasValidFormat(data) {
+	function _editArticleHasValidFormat(data) {
 		let noName = data.name === undefined;
 		let noPrice = data.price === undefined;
 		let noInventory = data.inventory === undefined;
@@ -47,22 +48,22 @@ module.exports = (function() {
 			&& (noInventory || inventoryIsStr);
 	}
 
-	function _updateProduct(data, callback) {
+	function _updateArticle(data, callback) {
 		let id = data.id;
 		_all()
 			.then(_ => {
 				if(data.name !== undefined) {
-					return db.none(`UPDATE "products" SET name = '${data.name}' WHERE id = ${id};`);
+					return db.none(`UPDATE "articles" SET name = '${data.name}' WHERE id = ${id};`);
 				}
 			})
 			.then(_ => {
 				if(data.price !== undefined) {
-					return db.none(`UPDATE "products" SET price = ${data.price} WHERE id = ${id};`);
+					return db.none(`UPDATE "articles" SET price = ${data.price} WHERE id = ${id};`);
 				}
 			})
 			.then(_ => {
 				if(data.inventory !== undefined) {
-					return db.none(`UPDATE "products" SET inventory = '${data.inventory}' WHERE id = ${id};`);
+					return db.none(`UPDATE "articles" SET inventory = '${data.inventory}' WHERE id = ${id};`);
 				}
 			})
 			.then(_ => {
@@ -76,23 +77,23 @@ module.exports = (function() {
 				data[key] = undefined;
 			}
 		}
-		if(_editProductHasValidFormat(data)) {
-			_updateProduct(data, _ => {
+		if(_editArticleHasValidFormat(data)) {
+			_updateArticle(data, _ => {
 				_getByID(data.id)
-					.then(productData => {
-						callback('success', productData);
+					.then(articleData => {
+						callback('success', articleData);
 					});
 			});
 		}else{
 			_getByID(data.id)
-				.then(productData => {
-					callback('fail', productData);
+				.then(articleData => {
+					callback('fail', articleData);
 				});
 		}
 	}
 
 	function _deleteByID(data) {
-		return db.none(`DELETE FROM "products" WHERE id = ${data.id}`);
+		return db.none(`DELETE FROM "articles" WHERE id = ${data.id}`);
 	}
 
 	return { 

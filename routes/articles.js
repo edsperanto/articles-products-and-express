@@ -6,6 +6,7 @@ const articleModel = require('../models/articles');
 router.get('/', (req, res) => {
 	articleModel.all()
 		.then(articlesList => {
+			console.log("showing again", articlesList);
 			res.render("articles", { "allArticles": true, "article": articlesList });
 		})
 		.catch(error => {
@@ -14,66 +15,65 @@ router.get('/', (req, res) => {
 });
 
 router.get('/new', (req, res) => {
-	res.render("products", { "newProduct": true, "product": { "err": false } });
+	res.render("articles", { "newArticle": true, "article": { "err": false } });
 });
 
 router.get('/new/err', (req, res) => {
-	res.render("products", { "newProduct": true, "product": { "err": true } });
+	res.render("articles", { "newArticle": true, "article": { "err": true } });
 });
 
 router.get('/:id', (req, res) => {
-	productModel.getByID(req.params.id)
-		.then(productData => {
-			productData.notEmpty = true;
-			res.render("products", { "oneProduct": true, "product": productData });
+	articleModel.getByID(req.params.id)
+		.then(articleData => {
+			res.render("articles", { "oneArticle": true, "article": articleData });
 		})
 		.catch(err => {
-			res.render("products", { "oneProduct": true, "product": {"id": "empty", "name": "Product does not exist"} });
+			res.render("articles", { "oneArticle": true, "article": {"id": "empty", "title": "Article does not exist"} });
 		});
 });
 
 router.get('/:id/edit', (req, res) => {
-	productModel.getByID(req.params.id)
-		.then(productData => {
-			res.render("products", { "editProduct": true, "product": productData });
+	articleModel.getByID(req.params.id)
+		.then(articleData => {
+			res.render("articles", { "editArticle": true, "article": articleData });
 		})
 		.catch(err => {
-			res.render("products", { "oneProduct": true, "product": {"id": "empty", "name": "Product does not exist"} });
+			res.render("articles", { "oneArticle": true, "article": {"id": "empty", "name": "Article does not exist"} });
 		});
 });
 
 router.post('/', (req, res) => {
-	productModel.add(req.body)
+	articleModel.add(req.body)
 		.then(_ => {
-			productModel.all()
-				.then(productsList => {
-					res.render("products", { "allProducts": true, "product": productsList });
+			articleModel.all()
+				.then(articlesList => {
+					res.render("articles", { "allArticles": true, "article": articlesList });
 				});
 		})
 		.catch(err => {
-			res.redirect(303, `/products/new/err`);
+			res.redirect(303, `/articles/new/err`);
 		});
 });
 
 router.put('/:id', (req, res) => {
-	productModel.editByID(req.body, (status, productData) => {
+	articleModel.editByID(req.body, (status, articleData) => {
 		if(status === 'success') {
 			console.log('EDIT SUCCESS');
-			res.render("products", { "oneProduct": true, "product": productData });
+			res.render("articles", { "oneArticle": true, "article": articleData });
 		}else{
 			console.log('EDIT FAIL');
-			res.render("products", { "editProduct": true, "product": productData });
+			res.render("articles", { "editArticle": true, "article": articleData });
 		}
 	});
 });
 
 router.delete('/:id', (req, res) => {
-	productModel.deleteByID(req.body)
+	articleModel.deleteByID(req.body)
 		.then(_ => {
-			res.redirect(303, `/products`);
+			res.redirect(303, `/articles`);
 		})
 		.catch(_ => {
-			res.redirect(303, `/products/${req.body.id}`);
+			res.redirect(303, `/articles/${req.body.id}`);
 		});
 });
 

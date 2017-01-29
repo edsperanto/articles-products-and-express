@@ -8,7 +8,7 @@ CREATE DATABASE articles_products_express;
 
 DROP TABLE IF EXISTS "products";
 CREATE TABLE "products" (
-	id SERIAL NOT NULL PRIMARY KEY,a
+	id SERIAL NOT NULL PRIMARY KEY,
 	name TEXT NOT NULL,
 	price INTEGER NOT NULL,
 	inventory TEXT NOT NULL
@@ -16,7 +16,8 @@ CREATE TABLE "products" (
 
 DROP TABLE IF EXISTS "articles";
 CREATE TABLE "articles" (
-	urlTitle TEXT NOT NULL PRIMARY KEY,
+	id SERIAL NOT NULL PRIMARY KEY,
+	urlTitle TEXT NOT NULL,
 	title TEXT NOT NULL,
 	author TEXT NOT NULL,
 	body TEXT NOT NULL
