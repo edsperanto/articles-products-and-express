@@ -1,7 +1,5 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const router = express.Router();
-const Products = require('../db/products');
 const To = require('../helpers/To');
 const productModel = require('../models/products');
 
