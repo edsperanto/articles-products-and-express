@@ -3,9 +3,22 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const Products = require('../db/products');
 const To = require('../helpers/To');
+const productModel = require('../models/products');
 
 router.get('/', (req, res) => {
-	res.render("products", { "allProducts": true, "product": Products.all() });
+	productModel.all()
+		.then(productsList => {
+			if(productsList.length === 0) {
+				console.log('zerooo');
+				res.render("products", { "allProducts": true, "product": {"empty": { 'name': 'Product list is empty', 'notEmpty': false }} });
+			}else{
+				let outputObj = {};
+				productsList.forEach(product => {
+					outputObj[product.id] = product;
+				});
+				res.render("products", { "allProducts": true, "product": outputObj });
+			}
+		});
 });
 
 router.get('/new', (req, res) => {
@@ -18,8 +31,10 @@ router.get('/new/err', (req, res) => {
 
 router.get('/:id', (req, res) => {
 	let urlID = req.params.id;
-	let productData = Products.getByID(urlID);
-	res.render("products", { "oneProduct": true, "product": productData });
+	productModel.getByID(urlID).
+		then(productData => {
+			res.render("products", { "oneProduct": true, "product": productData });
+		});
 });
 
 router.get('/:id/edit', (req, res) => {
