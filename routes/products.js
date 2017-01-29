@@ -8,18 +8,16 @@ const productModel = require('../models/products');
 router.get('/', (req, res) => {
 	productModel.all()
 		.then(productsList => {
-			if(productsList.length === 0) {
-				console.log('zerooo');
-				res.render("products", { "allProducts": true, "product": {"empty": { 'name': 'Product list is empty', 'notEmpty': false }} });
-			}else{
-				let outputObj = {};
-				productsList.forEach(product => {
-					outputObj[product.id] = product;
-					outputObj[product.id]['notEmpty'] = true;
-				});
-				console.log(outputObj);
-				res.render("products", { "allProducts": true, "product": outputObj });
-			}
+			let outputObj = {};
+			productsList.forEach(product => {
+				outputObj[product.id] = product;
+				outputObj[product.id]['notEmpty'] = true;
+			});
+			console.log(outputObj);
+			res.render("products", { "allProducts": true, "product": outputObj });
+		})
+		.catch(error => {
+			res.render("products", { "allProducts": true, "product": {"empty": { 'name': 'Product list is empty', 'notEmpty': false }} });
 		});
 });
 
@@ -33,9 +31,14 @@ router.get('/new/err', (req, res) => {
 
 router.get('/:id', (req, res) => {
 	let urlID = req.params.id;
-	productModel.getByID(urlID).
-		then(productData => {
+	productModel.getByID(urlID)
+		.then(productData => {
+			console.log(productData);
+			productData.notEmpty = true;
 			res.render("products", { "oneProduct": true, "product": productData });
+		})
+		.catch(err => {
+			res.render("products", { "oneProduct": true, "product": {"id": "empty", "name": "Product does not exist"} });
 		});
 });
 
