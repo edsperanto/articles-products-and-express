@@ -70,17 +70,13 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-	function success() {
-		res.redirect(303, `/products`);
-	}
-	function failure() {
-		res.redirect(303, `/products/${req.body.id}`);
-	}
-	if(req.params.id !== req.body.id) {
-		failure();
-	}else{
-		Products.deleteByID(req.body, success, failure);
-	}
+	productModel.deleteByID(req.body)
+		.then(_ => {
+			res.redirect(303, `/products`);
+		})
+		.catch(_ => {
+			res.redirect(303, `/products/${req.body.id}`);
+		});
 });
 
 module.exports = router;

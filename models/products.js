@@ -91,10 +91,15 @@ module.exports = (function() {
 		}
 	}
 
+	function _deleteByID(data) {
+		return db.none(`DELETE FROM "products" WHERE id = ${data.id}`);
+	}
+
 	return { 
 		all: _all, 
 		getByID: _getByID,
 		add: _add,
-		editByID: _editByID
+		editByID: _editByID,
+		deleteByID: _deleteByID
 	};
 })();
