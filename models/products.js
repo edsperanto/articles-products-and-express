@@ -11,7 +11,7 @@ const db = pgp({
 
 module.exports = (function() {
 	function _all() {
-		return db.many('SELECT * FROM "products"')
+		return db.many('SELECT * FROM "products";')
 			.then(productsList => {
 				let outputObj = {};
 				productsList.forEach(product => {
@@ -23,7 +23,7 @@ module.exports = (function() {
 	}
 
 	function _getByID(id) {
-		return db.one(`SELECT * FROM "products" WHERE id = ${id}`)
+		return db.one(`SELECT * FROM "products" WHERE id = ${id};`)
 			.then(productData => {
 				productData.notEmpty = true;
 				return productData;
@@ -35,14 +35,66 @@ module.exports = (function() {
 		return db.none(`INSERT INTO "products" (name, price, inventory) VALUES ('${data.name}', ${price}, '${data.inventory}');`);
 	}
 
-	function _updateProduct(data) {
+	function _editProductHasValidFormat(data) {
+		let noName = data.name === undefined;
+		let noPrice = data.price === undefined;
+		let noInventory = data.inventory === undefined;
+		let nameIsStr = typeof data.name === 'string';
+		let priceIsNum = typeof To.moneyToNum(data.price) === 'number';
+		let inventoryIsStr = typeof data.inventory === 'string';
+		return (noName || nameIsStr)
+			&& (noPrice || priceIsNum)
+			&& (noInventory || inventoryIsStr);
+	}
 
+	function _updateProduct(data, callback) {
+		let id = data.id;
+		_all()
+			.then(_ => {
+				if(data.name !== undefined) {
+					return db.none(`UPDATE "products" SET name = '${data.name}' WHERE id = ${id};`);
+				}
+			})
+			.then(_ => {
+				if(data.price !== undefined) {
+					return db.none(`UPDATE "products" SET price = ${data.price} WHERE id = ${id};`);
+				}
+			})
+			.then(_ => {
+				if(data.inventory !== undefined) {
+					return db.none(`UPDATE "products" SET inventory = '${data.inventory}' WHERE id = ${id};`);
+				}
+			})
+			.then(_ => {
+				callback();
+			});
+	}
+
+	function _editByID(data, callback) {
+		for(key in data) {
+			if(data[key] === "") {
+				data[key] = undefined;
+			}
+		}
+		if(_editProductHasValidFormat(data)) {
+			_updateProduct(data, _ => {
+				_getByID(data.id)
+					.then(productData => {
+						callback('success', productData);
+					});
+			});
+		}else{
+			_getByID(data.id)
+				.then(productData => {
+					callback('fail', productData);
+				});
+		}
 	}
 
 	return { 
 		all: _all, 
 		getByID: _getByID,
 		add: _add,
-		updateProduct: _updateProduct
+		editByID: _editByID
 	};
 })();

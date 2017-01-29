@@ -58,22 +58,15 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-	for(key in req.body) {
-		if(req.body[key] === "") {
-			req.body[key] = undefined;
+	productModel.editByID(req.body, (status, productData) => {
+		if(status === 'success') {
+			console.log('EDIT SUCCESS');
+			res.render("products", { "oneProduct": true, "product": productData });
+		}else{
+			console.log('EDIT FAIL');
+			res.render("products", { "editProduct": true, "product": productData });
 		}
-	}
-	function success() {
-		let urlID = req.params.id;
-		let productData = Products.getByID(urlID);
-		res.render("products", { "oneProduct": true, "product": productData });
-	}
-	function failure() {
-		let productData = Products.getByID(req.params.id);
-		productData.err = true;
-		res.render("products", { "editProduct": true, "product": productData });
-	}
-	Products.editByID(req.body, success, failure);
+	});
 });
 
 router.delete('/:id', (req, res) => {
