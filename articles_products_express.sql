@@ -10,8 +10,14 @@ CREATE TABLE "products" (
 	id SERIAL NOT NULL PRIMARY KEY,
 	name TEXT NOT NULL,
 	price INTEGER NOT NULL,
-	inventory TEXT NOT NULL,
-	notEmpty BOOLEAN NOT NULL DEFAULT true
+	inventory TEXT NOT NULL
+);
+
+CREATE TABLE "articles" (
+	id SERIAL NOT NULL PRIMARY KEY,
+	name TEXT NOT NULL,
+	price INTEGER NOT NULL,
+	inventory TEXT NOT NULL
 );
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO articles_products_user;

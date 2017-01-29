@@ -15,7 +15,9 @@ router.get('/', (req, res) => {
 				let outputObj = {};
 				productsList.forEach(product => {
 					outputObj[product.id] = product;
+					outputObj[product.id]['notEmpty'] = true;
 				});
+				console.log(outputObj);
 				res.render("products", { "allProducts": true, "product": outputObj });
 			}
 		});
