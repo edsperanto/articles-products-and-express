@@ -8,13 +8,7 @@ const productModel = require('../models/products');
 router.get('/', (req, res) => {
 	productModel.all()
 		.then(productsList => {
-			let outputObj = {};
-			productsList.forEach(product => {
-				outputObj[product.id] = product;
-				outputObj[product.id]['notEmpty'] = true;
-			});
-			console.log(outputObj);
-			res.render("products", { "allProducts": true, "product": outputObj });
+			res.render("products", { "allProducts": true, "product": productsList });
 		})
 		.catch(error => {
 			res.render("products", { "allProducts": true, "product": {"empty": { 'name': 'Product list is empty', 'notEmpty': false }} });
@@ -30,10 +24,8 @@ router.get('/new/err', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-	let urlID = req.params.id;
-	productModel.getByID(urlID)
+	productModel.getByID(req.params.id)
 		.then(productData => {
-			console.log(productData);
 			productData.notEmpty = true;
 			res.render("products", { "oneProduct": true, "product": productData });
 		})
@@ -43,17 +35,26 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/:id/edit', (req, res) => {
-	res.render("products", { "editProduct": true, "product": Products.getByID(req.params.id) });
+	productModel.getByID(req.params.id)
+		.then(productData => {
+			res.render("products", { "editProduct": true, "product": productData });
+		})
+		.catch(err => {
+			res.render("products", { "oneProduct": true, "product": {"id": "empty", "name": "Product does not exist"} });
+		});
 });
 
 router.post('/', (req, res) => {
-	function success() {
-		res.render("products", { "allProducts": true, "product": Products.all() });
-	}
-	function failure() {
-		res.redirect(303, `/products/new/err`);
-	}
-	Products.add(req.body, success, failure);
+	productModel.add(req.body)
+		.then(_ => {
+			productModel.all()
+				.then(productsList => {
+					res.render("products", { "allProducts": true, "product": productsList });
+				});
+		})
+		.catch(err => {
+			res.redirect(303, `/products/new/err`);
+		});
 });
 
 router.put('/:id', (req, res) => {

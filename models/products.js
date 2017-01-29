@@ -1,3 +1,4 @@
+const To = require('../helpers/To');
 const pgp =  require('pg-promise')();
 const PG_PASS = process.env.PG_PASS;
 const db = pgp({
@@ -10,44 +11,38 @@ const db = pgp({
 
 module.exports = (function() {
 	function _all() {
-		return db.many('SELECT * FROM "products"');
+		return db.many('SELECT * FROM "products"')
+			.then(productsList => {
+				let outputObj = {};
+				productsList.forEach(product => {
+					outputObj[product.id] = product;
+					outputObj[product.id]['notEmpty'] = true;
+				});
+				return outputObj;
+			});
 	}
 
 	function _getByID(id) {
-		return db.one(`SELECT * FROM "products" WHERE id = ${id}`);
+		return db.one(`SELECT * FROM "products" WHERE id = ${id}`)
+			.then(productData => {
+				productData.notEmpty = true;
+				return productData;
+			});
 	}
 
-	function _newProductHasValidFormat(data) {
-		let nameIsStr = typeof data.name === 'string';
-		let priceIsNum = typeof To.moneyToNum(data.price) === 'number';
-		let inventoryIsStr = typeof data.inventory === 'string';
-		return nameIsStr && priceIsNum && inventoryIsStr;
+	function _add(data) {
+		let price = To.moneyToNum(data.price);
+		return db.none(`INSERT INTO "products" (name, price, inventory) VALUES ('${data.name}', ${price}, '${data.inventory}');`);
 	}
 
 	function _updateProduct(data) {
-		let validKeys = ['id', 'name', 'price', 'inventory'];
-		validKeys.forEach(key => {
-			if(data[key] !== undefined) {
-				_list[data.id][key] = data[key];
-			}
-		});
-		_list[data.id].price = "$" + To.moneyToNum(_list[data.id].price).toFixed(2);
+
 	}
 
-	function _add(data, success, failure) {
-		if(_newProductHasValidFormat(data)) {
-			data.id = To.rndStr(rndIDStrLength);
-			_list[data.id] = {};
-			_list[data.id].notEmpty = true;
-			_updateProduct(data);
-			success(_getByID(data.id));
-		}else{
-			failure();
-		}
-	}
 	return { 
 		all: _all, 
 		getByID: _getByID,
+		add: _add,
 		updateProduct: _updateProduct
 	};
 })();
