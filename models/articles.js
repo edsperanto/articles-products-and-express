@@ -23,7 +23,15 @@ module.exports = (function() {
 	}
 
 	function _getByID(id) {
-		return db.one(`SELECT * FROM "articles" WHERE urltitle = '${id}';`)
+		return db.one(`SELECT * FROM "articles" WHERE urltitle = '${To.strToUrl(id)}';`)
+			.then(articleData => {
+				articleData.notEmpty = true;
+				return articleData;
+			});
+	}
+
+	function _getByActualID(id) {
+		return db.one(`SELECT * FROM "articles" WHERE id = '${id}';`)
 			.then(articleData => {
 				articleData.notEmpty = true;
 				return articleData;
@@ -31,8 +39,8 @@ module.exports = (function() {
 	}
 
 	function _add(data) {
-		let price = To.moneyToNum(data.price);
-		return db.none(`INSERT INTO "articles" (name, price, inventory) VALUES ('${data.name}', ${price}, '${data.inventory}');`);
+		let url = To.strToUrl(data.title);
+		return db.none(`INSERT INTO "articles" (title, urltitle, author, body) VALUES ('${data.title}', '${url}', '${data.author}', '${data.body}');`);
 	}
 
 	function _editArticleHasValidFormat(data) {
@@ -49,20 +57,23 @@ module.exports = (function() {
 
 	function _updateArticle(data, callback) {
 		let id = data.id;
-		_all()
+		return _all()
 			.then(_ => {
-				if(data.name !== undefined) {
-					return db.none(`UPDATE "articles" SET name = '${data.name}' WHERE id = ${id};`);
+				if(data.title !== undefined) {
+					return db.none(`UPDATE "articles" SET title = '${data.title}' WHERE id = ${id};`)
+						.then(_ => {
+							return db.none(`UPDATE "articles" SET urltitle = '${To.strToUrl(data.title)}' WHERE id = ${id};`);
+						});
 				}
 			})
 			.then(_ => {
-				if(data.price !== undefined) {
-					return db.none(`UPDATE "articles" SET price = ${data.price} WHERE id = ${id};`);
+				if(data.author !== undefined) {
+					return db.none(`UPDATE "articles" SET author = ${data.author} WHERE id = ${id};`);
 				}
 			})
 			.then(_ => {
-				if(data.inventory !== undefined) {
-					return db.none(`UPDATE "articles" SET inventory = '${data.inventory}' WHERE id = ${id};`);
+				if(data.body !== undefined) {
+					return db.none(`UPDATE "articles" SET body = '${data.body}' WHERE id = ${id};`);
 				}
 			})
 			.then(_ => {
@@ -78,13 +89,13 @@ module.exports = (function() {
 		}
 		if(_editArticleHasValidFormat(data)) {
 			_updateArticle(data, _ => {
-				_getByID(data.id)
+				_getByActualID(data.id)
 					.then(articleData => {
 						callback('success', articleData);
 					});
 			});
 		}else{
-			_getByID(data.id)
+			_getByActualID(data.id)
 				.then(articleData => {
 					callback('fail', articleData);
 				});

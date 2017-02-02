@@ -1,9 +1,10 @@
 <div class='item' id='edit-form'>
 	<p class='name'>{{title}}</p>
 	<ul class='details'>
-		<form action="/articles/{{urlTitle}}?_method=PUT" method='POST' id='form'>
+		<form action="/articles/{{urltitle}}?_method=PUT" method='POST' id='form'>
 			<table>
-				<input type='hidden' name='urlTitle' value='{{urlTitle}}'>
+				<input type='hidden' name='urlTitle' value='{{urltitle}}'>
+				<input type='hidden' name='id' value='{{id}}'>
 				{{#if err}}
 				<tr>
 					<td style='color: red;'>Error:</td>
@@ -32,7 +33,7 @@
 <script>
 	let form = document.getElementById('form');
 	let notEmpty{{id}} = "{{title}}" !== "Article Does Not Exist" && "{{title}}" !== "Article List is Empty";
-	let rightPath = window.location.pathname.indexOf("{{urlTitle}}") !== -1 || window.location.pathname === '/articles/new';
+	let rightPath = window.location.pathname.indexOf("{{urltitle}}") !== -1 || window.location.pathname === '/articles/new';
 	if(rightPath && notEmpty{{id}}) {
 		toSaveArticle.addEventListener('click', () => {
 			form.submit();
@@ -41,7 +42,7 @@
 		document.getElementById('edit-form').style.display = 'none';
 	}
 	document.getElementById('delete').addEventListener('click', () => {
-		form.setAttribute('action', '/articles/{{urlTitle}}?_method=DELETE');
+		form.setAttribute('action', '/articles/{{urltitle}}?_method=DELETE');
 		form.submit();
 	});
 </script>

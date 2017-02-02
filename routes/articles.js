@@ -6,7 +6,6 @@ const articleModel = require('../models/articles');
 router.get('/', (req, res) => {
 	articleModel.all()
 		.then(articlesList => {
-			console.log("showing again", articlesList);
 			res.render("articles", { "allArticles": true, "article": articlesList });
 		})
 		.catch(error => {
@@ -35,6 +34,7 @@ router.get('/:id', (req, res) => {
 router.get('/:id/edit', (req, res) => {
 	articleModel.getByID(req.params.id)
 		.then(articleData => {
+			console.log(articleData);
 			res.render("articles", { "editArticle": true, "article": articleData });
 		})
 		.catch(err => {
