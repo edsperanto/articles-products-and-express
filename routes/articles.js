@@ -28,7 +28,7 @@ router.get('/:id', (req, res) => {
 			res.render("articles", { "oneArticle": true, "article": articleData });
 		})
 		.catch(err => {
-			res.render("articles", { "oneArticle": true, "article": {"id": "empty", "title": "Article does not exist"} });
+			res.render("articles", { "oneArticle": true, "article": {"id": "empty", "title": "Article Does Not Exist"} });
 		});
 });
 
@@ -38,7 +38,7 @@ router.get('/:id/edit', (req, res) => {
 			res.render("articles", { "editArticle": true, "article": articleData });
 		})
 		.catch(err => {
-			res.render("articles", { "oneArticle": true, "article": {"id": "empty", "name": "Article does not exist"} });
+			res.render("articles", { "oneArticle": true, "article": {"id": "empty", "name": "Article Does Not Exist"} });
 		});
 });
 

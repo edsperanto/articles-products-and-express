@@ -5,7 +5,7 @@
 		<table>
 			<tr>
 				<td>Title URL</td>
-				<td class='detail-data'>/articles/{{urlTitle}}</td>
+				<td class='detail-data'>/articles/{{urltitle}}</td>
 			</tr>
 			<tr>
 				<td>Author</td>
@@ -21,10 +21,10 @@
 </div>
 <script>
 	let notEmpty{{id}} = "{{title}}" !== "Article Does Not Exist" && "{{title}}" !== "Article List is Empty";
-	if(window.location.pathname !== '/articles/{{urlTitle}}' && notEmpty{{id}}) {
+	if(window.location.pathname !== '/articles/{{urltitle}}' && notEmpty{{id}}) {
 		let currentProduct = document.getElementById("{{id}}");
 		currentProduct.addEventListener('click', () => {
-			window.location = '/articles/{{urlTitle}}';
+			window.location = '/articles/{{urltitle}}';
 		});
 		currentProduct.style.cursor = 'pointer';
 		currentProduct.className = 'item clickableItem';

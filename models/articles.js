@@ -13,7 +13,6 @@ module.exports = (function() {
 	function _all() {
 		return db.many('SELECT * FROM "articles";')
 			.then(articlesList => {
-				console.log("showing", articlesList);
 				let outputObj = {};
 				articlesList.forEach(article => {
 					outputObj[article.title] = article;
@@ -24,7 +23,7 @@ module.exports = (function() {
 	}
 
 	function _getByID(id) {
-		return db.one(`SELECT * FROM "articles" WHERE urltitle = ${id};`)
+		return db.one(`SELECT * FROM "articles" WHERE urltitle = '${id}';`)
 			.then(articleData => {
 				articleData.notEmpty = true;
 				return articleData;
