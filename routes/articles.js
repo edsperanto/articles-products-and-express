@@ -34,7 +34,6 @@ router.get('/:id', (req, res) => {
 router.get('/:id/edit', (req, res) => {
 	articleModel.getByID(req.params.id)
 		.then(articleData => {
-			console.log(articleData);
 			res.render("articles", { "editArticle": true, "article": articleData });
 		})
 		.catch(err => {
@@ -58,10 +57,8 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
 	articleModel.editByID(req.body, (status, articleData) => {
 		if(status === 'success') {
-			console.log('EDIT SUCCESS');
 			res.render("articles", { "oneArticle": true, "article": articleData });
 		}else{
-			console.log('EDIT FAIL');
 			res.render("articles", { "editArticle": true, "article": articleData });
 		}
 	});
