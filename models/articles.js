@@ -68,7 +68,7 @@ module.exports = (function() {
 			})
 			.then(_ => {
 				if(data.author !== undefined) {
-					return db.none(`UPDATE "articles" SET author = ${data.author} WHERE id = ${id};`);
+					return db.none(`UPDATE "articles" SET author = '${data.author}' WHERE id = ${id};`);
 				}
 			})
 			.then(_ => {
