@@ -1,11 +1,16 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const router = express.Router();
-const Articles = require('../db/articles');
 const To = require('../helpers/To');
+const articleModel = require('../models/articles');
 
 router.get('/', (req, res) => {
-	res.render("articles", { "allArticles": true, "article": Articles.all() });
+	articleModel.all()
+		.then(articlesList => {
+			res.render("articles", { "allArticles": true, "article": articlesList });
+		})
+		.catch(error => {
+			res.render("articles", { "allArticles": true, "article": {"empty": { 'title': 'Article list is empty', 'notEmpty': false }} });
+		});
 });
 
 router.get('/new', (req, res) => {
@@ -17,51 +22,56 @@ router.get('/new/err', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-	let urlID = req.params.id;
-	let articleData = Articles.getByID(urlID);
-	res.render("articles", { "oneArticle": true, "article": articleData });
+	articleModel.getByID(req.params.id)
+		.then(articleData => {
+			res.render("articles", { "oneArticle": true, "article": articleData });
+		})
+		.catch(err => {
+			res.render("articles", { "oneArticle": true, "article": {"id": "empty", "title": "Article Does Not Exist"} });
+		});
 });
 
 router.get('/:id/edit', (req, res) => {
-	res.render("articles", { "editArticle": true, "article": Articles.getByID(req.params.id) });
+	articleModel.getByID(req.params.id)
+		.then(articleData => {
+			res.render("articles", { "editArticle": true, "article": articleData });
+		})
+		.catch(err => {
+			res.render("articles", { "oneArticle": true, "article": {"id": "empty", "name": "Article Does Not Exist"} });
+		});
 });
 
 router.post('/', (req, res) => {
-	function success(article) {
-		res.render("articles", { "allArticles": true, "article": article });
-	}
-	function failure() {
-		res.redirect(303, `/articles/new/err`);
-	}
-	Articles.add(req.body, success, failure);
+	articleModel.add(req.body)
+		.then(_ => {
+			articleModel.all()
+				.then(articlesList => {
+					res.render("articles", { "allArticles": true, "article": articlesList });
+				});
+		})
+		.catch(err => {
+			res.redirect(303, `/articles/new/err`);
+		});
 });
 
 router.put('/:id', (req, res) => {
-	for(key in req.body) {
-		if(req.body[key] === "") {
-			req.body[key] = undefined;
+	articleModel.editByID(req.body, (status, articleData) => {
+		if(status === 'success') {
+			res.render("articles", { "oneArticle": true, "article": articleData });
+		}else{
+			res.render("articles", { "editArticle": true, "article": articleData });
 		}
-	}
-	function success(data) {
-		let articleData = Articles.getByID(data.title);
-		res.render("articles", { "oneArticle": true, "article": articleData });
-	}
-	function failure(data) {
-		let articleData = To.cloneObj(data);
-		articleData.err = true;
-		res.render("articles", { "editArticle": true, "article": articleData });
-	}
-	Articles.editByID(req.body, success, failure);
+	});
 });
 
 router.delete('/:id', (req, res) => {
-	function success() {
-		res.redirect(303, `/articles`);
-	}
-	function failure() {
-		res.redirect(303, `/article/${req.body.urlTitle}`);
-	}
-	Articles.deleteByID(req.body, success, failure);
+	articleModel.deleteByID(req.body)
+		.then(_ => {
+			res.redirect(303, `/articles`);
+		})
+		.catch(_ => {
+			res.redirect(303, `/articles/${req.body.id}`);
+		});
 });
 
 module.exports = router;

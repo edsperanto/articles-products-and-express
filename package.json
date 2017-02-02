@@ -29,6 +29,7 @@
     "supertest": "^2.0.1"
   },
   "dependencies": {
-    "express-handlebars": "^3.0.0"
+    "express-handlebars": "^3.0.0",
+    "pg-promise": "^5.5.4"
   }
 }

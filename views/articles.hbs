@@ -52,13 +52,13 @@
 		{{/if}}
 		{{#if oneArticle}}
 			linkTo(toArticles, '/articles');
-			linkTo(toEditArticle, '/articles/{{article.urlTitle}}/edit');
+			linkTo(toEditArticle, '/articles/{{article.urltitle}}/edit');
 			if(empty{{article.id}}) {
 				toEditArticle.style.display = 'none';
 			}
 		{{/if}}
 		{{#if editArticle}}
-			linkTo(toDiscardArticle, '/articles/{{article.urlTitle}}');
+			linkTo(toDiscardArticle, '/articles/{{article.urltitle}}');
 			if(empty{{article.id}}) {
 				toDiscardArticle.style.display = 'none';
 				toSaveArticle.style.display = 'none';
